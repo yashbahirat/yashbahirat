@@ -260,6 +260,39 @@ def hero_svg(s):
 </svg>'''
 
 
+GH_LOGO = ("M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61"
+           "C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605"
+           "-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405"
+           " 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286"
+           " 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12")
+
+VERDANA_11 = {**{d: 7.0 for d in "0123456789"}, ",": 3.5, ".": 3.5, " ": 3.9,
+              "a": 6.7, "b": 6.8, "c": 5.7, "d": 6.8, "e": 6.6, "f": 3.8, "g": 6.8, "h": 7.0, "i": 3.0,
+              "j": 3.7, "k": 6.4, "l": 3.0, "m": 10.7, "n": 7.0, "o": 6.7, "p": 6.8, "q": 6.8, "r": 4.7,
+              "s": 5.7, "t": 4.3, "u": 7.0, "v": 6.4, "w": 9.0, "x": 6.4, "y": 6.4, "z": 5.7}
+
+
+def text_w(t):
+    return sum(VERDANA_11.get(ch, 7.0) for ch in t)
+
+
+def badge_svg(label, message, color="#58a6ff", label_bg="#0d1117"):
+    """shields.io flat-square look-alike with a GitHub logo; no third-party service involved."""
+    lw_text, mw_text = text_w(label), text_w(message)
+    lw = 5 + 14 + 4 + lw_text + 5
+    mw = 5 + mw_text + 5
+    W = lw + mw
+    font = "Verdana,Geneva,DejaVu Sans,sans-serif"
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W:.0f}" height="20" viewBox="0 0 {W:.1f} 20" role="img" aria-label="{label}: {message}">
+<title>{label}: {message}</title>
+<g shape-rendering="crispEdges"><rect width="{lw:.1f}" height="20" fill="{label_bg}"/><rect x="{lw:.1f}" width="{mw:.1f}" height="20" fill="{color}"/></g>
+<path transform="translate(5 3) scale(.5833)" fill="#ffffff" d="{GH_LOGO}"/>
+<g fill="#fff" font-family="{font}" font-size="11" text-rendering="geometricPrecision">
+<text x="{23:.1f}" y="14" textLength="{lw_text:.1f}">{label}</text>
+<text x="{lw + 5:.1f}" y="14" textLength="{mw_text:.1f}">{message}</text>
+</g></svg>"""
+
+
 def main():
     user, out = sys.argv[1], sys.argv[2]
     os.makedirs(out, exist_ok=True)
@@ -269,6 +302,8 @@ def main():
         suffix = "-dark" if name == "dark" else ""
         with open(os.path.join(out, f"contributions{suffix}.svg"), "w") as f:
             f.write(svg(s, user, theme))
+    with open(os.path.join(out, "contributions-badge.svg"), "w") as f:
+        f.write(badge_svg("contributions", f"{s['total']:,}"))
     with open(os.path.join(out, "hero.svg"), "w") as f:
         f.write(hero_svg(s))
     with open(os.path.join(out, "contributions.json"), "w") as f:
