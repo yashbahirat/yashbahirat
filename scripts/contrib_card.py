@@ -94,9 +94,9 @@ def stats(days):
 
 THEMES = {
     "dark": dict(bg="#0d1117", border="#30363d", title="#8b949e", text="#e6edf3",
-                 muted="#8b949e", accent="#58a6ff", accent2="#a371f7", ok="#3fb950", bar="#161b22"),
+                 muted="#8b949e", accent="#F0883E", bar="#161b22"),
     "light": dict(bg="#ffffff", border="#d0d7de", title="#57606a", text="#1f2328",
-                  muted="#57606a", accent="#0969da", accent2="#8250df", ok="#1a7f37", bar="#f6f8fa"),
+                  muted="#57606a", accent="#BC4C00", bar="#f6f8fa"),
 }
 
 
@@ -115,9 +115,9 @@ def svg(s, user, t):
     since = s["since"].strftime("%b %Y")
     W, H = 800, 300
     stats_cells = [
-        ("current streak", f"{s['current']}d", t["ok"]),
-        ("longest streak", f"{s['longest']}d", t["accent2"]),
-        (f"in {s['year']}", fmt(s["this_year"]), t["accent"]),
+        ("current streak", f"{s['current']}d", t["text"]),
+        ("longest streak", f"{s['longest']}d", t["text"]),
+        (f"in {s['year']}", fmt(s["this_year"]), t["text"]),
         ("last 30 days", fmt(s["last30"]), t["text"]),
     ]
     cells = []
@@ -137,7 +137,7 @@ def svg(s, user, t):
     bars = []
     for i, v in enumerate(series):
         h = 2 if v == 0 else max(4, maxh * math.sqrt(v / peak))
-        fill = t["border"] if v == 0 else "url(#bar)"
+        fill = t["border"] if v == 0 else t["accent"]
         bars.append(
             f'<rect class="grow" style="animation-delay:{0.7 + i * 0.012:.3f}s" x="{x0 + i * pitch}" '
             f'y="{base - h:.1f}" width="{bw}" height="{h:.1f}" rx="2" fill="{fill}"/>'
@@ -157,18 +157,14 @@ def svg(s, user, t):
   @keyframes grow {{ from {{ transform: scaleY(0); }} to {{ transform: none; }} }}
   @keyframes blink {{ 50% {{ opacity: 0; }} }}
 </style>
-<defs>
-  <linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="{t['accent']}"/><stop offset="1" stop-color="{t['accent2']}"/></linearGradient>
-  <linearGradient id="bar" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="{t['accent']}"/><stop offset="1" stop-color="{t['accent2']}"/></linearGradient>
-</defs>
 <rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="10" fill="{t['bg']}" stroke="{t['border']}"/>
 <rect x=".5" y=".5" width="{W - 1}" height="30" rx="10" fill="{t['bar']}"/>
 <rect x=".5" y="20" width="{W - 1}" height="11" fill="{t['bar']}"/>
 <line x1="0" y1="30.5" x2="{W}" y2="30.5" stroke="{t['border']}"/>
 <circle cx="20" cy="15.5" r="5" fill="#ff5f57"/><circle cx="38" cy="15.5" r="5" fill="#febc2e"/><circle cx="56" cy="15.5" r="5" fill="#28c840"/>
 <text x="{W / 2}" y="20" text-anchor="middle" fill="{t['title']}" font-size="12">{user}@github: ~/contributions</text>
-<text x="40" y="58" fill="{t['muted']}" font-size="13"><tspan fill="{t['ok']}">$</tspan> git rev-list --count --all --author={user}<tspan class="cursor" fill="{t['text']}">▋</tspan></text>
-<g class="big"><text x="38" y="132" fill="url(#g)" font-size="64" font-weight="800">{fmt(s['total'])}</text></g>
+<text x="40" y="58" fill="{t['muted']}" font-size="13"><tspan fill="{t['accent']}">$</tspan> git rev-list --count --all --author={user}<tspan class="cursor" fill="{t['text']}">▋</tspan></text>
+<g class="big"><text x="38" y="132" fill="{t['accent']}" font-size="64" font-weight="800">{fmt(s['total'])}</text></g>
 <text class="fade" style="animation-delay:.45s" x="40" y="160" fill="{t['text']}" font-size="14">contributions since {since}</text>
 <text class="fade" style="animation-delay:.6s" x="40" y="182" fill="{t['muted']}" font-size="12">peak day: {fmt(s['best_n'])} on {s['best_day'].strftime('%d %b %Y')}</text>
 <line x1="440" y1="76" x2="440" y2="186" stroke="{t['border']}"/>
@@ -196,7 +192,7 @@ def text_w(t):
     return sum(VERDANA_11.get(ch, 7.0) for ch in t)
 
 
-def badge_svg(label, message, color="#58a6ff", label_bg="#0d1117"):
+def badge_svg(label, message, color="#F0883E", label_bg="#0d1117"):
     """shields.io flat-square look-alike with a GitHub logo; no third-party service involved."""
     lw_text, mw_text = text_w(label), text_w(message)
     lw = 5 + 14 + 4 + lw_text + 5

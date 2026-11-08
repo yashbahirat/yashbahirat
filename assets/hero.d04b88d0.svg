@@ -12,16 +12,14 @@
 <defs>
   <clipPath id="frame"><rect width="1280" height="124" rx="16"/></clipPath>
   <clipPath id="slot"><rect x="900" y="62" width="340" height="44"/></clipPath>
-  <linearGradient id="trd" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient>
-  <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
 </defs>
 <g clip-path="url(#frame)">
   <rect width="1280" height="124" fill="#05070d"/>
-  <rect width="1280" height="1.5" fill="url(#edge)"/>
+  <rect width="1280" height="2" fill="#F0883E"/>
   <text class="mono" x="50" y="46" font-size="15" letter-spacing="3" fill="#8b949e">CURRENTLY</text>
-  <text class="sans rise" x="48" y="94" font-size="29" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="#8b949e">at</tspan> <tspan fill="url(#trd)">Tradeify</tspan></text>
+  <text class="sans rise" x="48" y="94" font-size="29" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="#8b949e">at</tspan> <tspan fill="#F0883E">Tradeify</tspan></text>
   <text class="mono" x="1232" y="46" text-anchor="end" font-size="15" letter-spacing="3" fill="#8b949e">BUILDING</text>
-  <g clip-path="url(#slot)"><text class="sans w0" x="1232" y="94" text-anchor="end" font-size="29" font-weight="700" fill="#58a6ff">agents.</text><text class="sans w1" x="1232" y="94" text-anchor="end" font-size="29" font-weight="700" fill="#bc8cff">harnesses.</text><text class="sans w2" x="1232" y="94" text-anchor="end" font-size="29" font-weight="700" fill="#3fb950">inference.</text></g>
+  <g clip-path="url(#slot)"><text class="sans w0" x="1232" y="94" text-anchor="end" font-size="29" font-weight="700" fill="#F0883E">agents.</text><text class="sans w1" x="1232" y="94" text-anchor="end" font-size="29" font-weight="700" fill="#F0883E">harnesses.</text><text class="sans w2" x="1232" y="94" text-anchor="end" font-size="29" font-weight="700" fill="#F0883E">inference.</text></g>
 </g>
 <rect x=".5" y=".5" width="1279" height="123" rx="16" fill="none" stroke="#21262d"/>
 </svg>
