@@ -4,6 +4,13 @@
 <img width="100%" src="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/hero.svg" alt="harness engineering > prompt engineering" />
 
 <p align="center">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fyashbahirat%2Fyashbahirat%2Foutput%2Fcontributions.json&logo=github&logoColor=white" />
+  <img src="https://img.shields.io/badge/status-shipping-2ea043?style=flat-square&labelColor=0d1117" />
+  <img src="https://img.shields.io/badge/harness-claude--code-D97757?style=flat-square&labelColor=0d1117&logo=claude&logoColor=D97757" />
+  <img src="https://komarev.com/ghpvc/?username=yashbahirat&style=flat-square&color=8b949e&label=visitors" />
+</p>
+
+<p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/contributions-dark.svg" />
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/contributions.svg" />
