@@ -33,7 +33,6 @@
 agent:
   name: Yash Bahirat
   role: Junior Agentic Coder @ Tradeify
-  base: B.Tech CSE (AI) @ VIT Pune
   mode: research-first, ship-fast
   harness: claude-code
 

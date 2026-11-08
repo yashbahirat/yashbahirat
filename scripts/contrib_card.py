@@ -220,7 +220,6 @@ def hero_svg(s):
         (f"{s['current']}d", "streak", "#3fb950"),
         ("claude-code", "harness", "#d97757"),
         ("1 paper", "1 patent", "#bc8cff"),
-        ("CSE-AI", "VIT Pune", "#8b949e"),
     ]
     chips, x = [], 48
     for i, (val, label, col) in enumerate(chips_data):
@@ -240,9 +239,7 @@ def hero_svg(s):
   {font_face("JBM", "jbmono-800.woff2", 800)}
   text {{ font-family: {font}; }}
   .chip {{ animation: chip .6s cubic-bezier(.2,.8,.2,1) both; }}
-  .live {{ animation: live 1.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }}
   @keyframes chip {{ from {{ opacity: 0; transform: translateY(8px); }} to {{ opacity: 1; transform: none; }} }}
-  @keyframes live {{ 0% {{ transform: scale(1); opacity: .9; }} 100% {{ transform: scale(2.6); opacity: 0; }} }}
   {"".join(css)}
 </style>
 <defs>
@@ -256,8 +253,6 @@ def hero_svg(s):
   <rect width="{W}" height="1.5" fill="url(#edge)"/>
   <text x="48" y="62" font-size="{size}"><tspan fill="#3fb950">yash</tspan><tspan fill="#6e7681">@</tspan><tspan fill="#bc8cff">agentic</tspan><tspan fill="#6e7681">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#6e7681">$ </tspan></text>
   {"".join(groups)}
-  <circle cx="{W - 120}" cy="54" r="4" fill="#3fb950"/><circle cx="{W - 120}" cy="54" r="4" fill="#3fb950" class="live"/>
-  <text x="{W - 108}" y="59" font-size="13" fill="#8b949e">online</text>
   <line x1="48" y1="82" x2="{W - 48}" y2="82" stroke="#21262d" stroke-dasharray="2 5"/>
   {"".join(chips)}
 </g>
