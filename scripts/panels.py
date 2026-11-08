@@ -188,7 +188,7 @@ def section_label(x, y, text, count=None):
 
 # ───────────────────────────── hero line under the banner ─────────────────────────────
 def hero():
-    Wh, H, BG = 1280, 130, "#05070d"
+    Wh, H, BG = 1280, 124, "#05070d"
     words = [("agents.", C["blue"]), ("harnesses.", C["purple"]), ("inference.", C["green"])]
     slot = 2.6
     T = slot * len(words)
@@ -199,16 +199,16 @@ def hero():
         b = 100 * (i * slot + 0.45) / T
         c = 100 * ((i + 1) * slot - 0.45) / T
         e = 100 * (i + 1) * slot / T
-        pre = f"0%,{a - 0.01:.2f}%{{opacity:0;transform:translateY(32px)}}" if i else ""
+        pre = f"0%,{a - 0.01:.2f}%{{opacity:0;transform:translateY(28px)}}" if i else ""
         css.append(
-            f"@keyframes w{i}{{{pre}{a:.2f}%{{opacity:0;transform:translateY(32px)}}"
+            f"@keyframes w{i}{{{pre}{a:.2f}%{{opacity:0;transform:translateY(28px)}}"
             f"{b:.2f}%,{c:.2f}%{{opacity:1;transform:none}}"
-            f"{e:.2f}%,100%{{opacity:0;transform:translateY(-32px)}}}}"
+            f"{e:.2f}%,100%{{opacity:0;transform:translateY(-28px)}}}}"
             f".w{i}{{animation:w{i} {T}s cubic-bezier(.6,0,.2,1) infinite}}")
-        groups.append(f'<text class="sans w{i}" x="1232" y="98" text-anchor="end" font-size="34" font-weight="700" fill="{col}">{wd}</text>')
+        groups.append(f'<text class="sans w{i}" x="1232" y="94" text-anchor="end" font-size="29" font-weight="700" fill="{col}">{wd}</text>')
     body = f'''<defs>
   <clipPath id="frame"><rect width="{Wh}" height="{H}" rx="16"/></clipPath>
-  <clipPath id="slot"><rect x="900" y="62" width="340" height="50"/></clipPath>
+  <clipPath id="slot"><rect x="900" y="62" width="340" height="44"/></clipPath>
   <linearGradient id="trd" x1="0" x2="1"><stop offset="0" stop-color="{C["blue"]}"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient>
   <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
 </defs>
@@ -216,7 +216,7 @@ def hero():
   <rect width="{Wh}" height="{H}" fill="{BG}"/>
   <rect width="{Wh}" height="1.5" fill="url(#edge)"/>
   <text class="mono" x="50" y="46" font-size="15" letter-spacing="3" fill="{C["muted"]}">CURRENTLY</text>
-  <text class="sans rise" x="48" y="98" font-size="34" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="{C["muted"]}">at</tspan> <tspan fill="url(#trd)">Tradeify</tspan></text>
+  <text class="sans rise" x="48" y="94" font-size="29" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="{C["muted"]}">at</tspan> <tspan fill="url(#trd)">Tradeify</tspan></text>
   <text class="mono" x="1232" y="46" text-anchor="end" font-size="15" letter-spacing="3" fill="{C["muted"]}">BUILDING</text>
   <g clip-path="url(#slot)">{"".join(groups)}</g>
 </g>
@@ -227,13 +227,13 @@ def hero():
 
 # ───────────────────────────── pull quote ─────────────────────────────
 def quote():
-    h = 190
+    h = 128
     body = f'''<defs><linearGradient id="q" x1="0" x2="1"><stop offset="0" stop-color="#f0f6fc"/><stop offset=".55" stop-color="#a5d6ff"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient></defs>
 <rect x=".5" y=".5" width="{W - 1}" height="{h - 1}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>
-<rect x="32" y="36" width="3" height="118" rx="1.5" fill="url(#q)"/>
-<text class="sans rise" x="60" y="72" font-size="24" font-weight="500" fill="{C["muted"]}">The model is the engine. The harness is the car.</text>
-<text class="sans rise" style="animation-delay:.25s" x="58" y="128" font-size="48" font-weight="700" fill="url(#q)">I build cars.</text>
-<text class="mono" x="60" y="156" font-size="11" letter-spacing="2" fill="{C["dim"]}">ON HARNESS ENGINEERING</text>'''
+<rect x="32" y="30" width="3" height="68" rx="1.5" fill="url(#q)"/>
+<text class="sans rise" x="52" y="50" font-size="16" font-weight="500" fill="{C["muted"]}">The model is the engine. The harness is the car.</text>
+<text class="sans rise" style="animation-delay:.25s" x="51" y="86" font-size="28" font-weight="700" fill="url(#q)">I build cars.</text>
+<text class="mono" x="52" y="108" font-size="10" letter-spacing="2" fill="{C["dim"]}">ON HARNESS ENGINEERING</text>'''
     return plain(W, h, "quote", body, aria="The model is the engine. The harness is the car. I build cars.")
 
 
@@ -369,9 +369,22 @@ def tools():
     return plain(W, h, "toolkit", body, css, aria="Toolkit: " + ", ".join(l for _, it in groups for _, l in it))
 
 
+def publish(name, svg):
+    """Write assets/<name>.<hash>.svg and point README at it, so GitHub never serves a stale copy."""
+    import hashlib
+    xml.dom.minidom.parseString(svg)  # GitHub serves these as standalone images: must be valid XML
+    digest = hashlib.sha1(svg.encode()).hexdigest()[:8]
+    for old_file in list(ASSETS.glob(f"{name}.svg")) + list(ASSETS.glob(f"{name}.*.svg")):
+        old_file.unlink()
+    fname = f"{name}.{digest}.svg"
+    (ASSETS / fname).write_text(svg)
+    readme = ROOT / "README.md"
+    text = readme.read_text()
+    text = re.sub(rf"\./assets/{name}(\.[0-9a-f]{{8}})?\.svg", f"./assets/{fname}", text)
+    readme.write_text(text)
+    print("wrote", f"assets/{fname}")
+
+
 if __name__ == "__main__":
     for name, fn in (("hero", hero), ("quote", quote), ("agent", agent), ("projects", projects), ("toolkit", tools)):
-        svg = fn()
-        xml.dom.minidom.parseString(svg)  # GitHub serves these as standalone images: must be valid XML
-        (ASSETS / f"{name}.svg").write_text(svg)
-        print("wrote", f"assets/{name}.svg")
+        publish(name, fn())
