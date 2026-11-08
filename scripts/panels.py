@@ -386,5 +386,5 @@ def publish(name, svg):
 
 
 if __name__ == "__main__":
-    for name, fn in (("hero", hero), ("quote", quote), ("agent", agent), ("projects", projects), ("toolkit", tools)):
+    for name, fn in (("hero", hero), ("agent", agent), ("projects", projects), ("toolkit", tools)):
         publish(name, fn())

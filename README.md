@@ -18,8 +18,6 @@
   </picture>
 </p>
 
-<img width="100%" src="./assets/quote.a4daefad.svg" alt="The model is the engine. The harness is the car. I build cars." />
-
 <a href="https://github.com/yashbahirat?tab=repositories"><img width="100%" src="./assets/projects.b8826fb2.svg" alt="Selected work: MPTL (Memory Provenance & Trust Ledger), Sovereign Agentic Workbench, RegulOS" /></a>
 
 <img width="100%" src="./assets/agent.144a601c.svg" alt="agent.yaml: Junior Agentic Coder @ Tradeify; focus: harness, agent and inference engineering" />
