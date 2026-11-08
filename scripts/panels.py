@@ -7,6 +7,7 @@ import base64
 import json
 import pathlib
 import re
+import xml.dom.minidom
 from xml.sax.saxutils import escape
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -337,7 +338,7 @@ def tools():
     out.append(f'<rect x=".5" y="{y + .5}" width="{W - 1}" height="{{H}}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>')
     y += 34
     for gname, items in groups:
-        out.append(f'<text class="sans" x="28" y="{y}" font-size="13" font-weight="500" fill="{C["muted"]}">{gname[0].upper() + gname[1:]}</text>')
+        out.append(f'<text class="sans" x="28" y="{y}" font-size="13" font-weight="500" fill="{C["muted"]}">{escape(gname[0].upper() + gname[1:])}</text>')
         ty = y + 14
         for j, (slug, label) in enumerate(items):
             if slug.startswith("@"):
@@ -370,5 +371,7 @@ def tools():
 
 if __name__ == "__main__":
     for name, fn in (("hero", hero), ("quote", quote), ("agent", agent), ("projects", projects), ("tools", tools)):
-        (ASSETS / f"{name}.svg").write_text(fn())
+        svg = fn()
+        xml.dom.minidom.parseString(svg)  # GitHub serves these as standalone images: must be valid XML
+        (ASSETS / f"{name}.svg").write_text(svg)
         print("wrote", f"assets/{name}.svg")
