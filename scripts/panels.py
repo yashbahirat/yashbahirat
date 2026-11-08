@@ -16,8 +16,8 @@ W = 800
 MONO = "'JBM',ui-monospace,Menlo,Consolas,monospace"
 
 C = dict(bg="#0d1117", bar="#161b22", border="#30363d", text="#e6edf3", muted="#8b949e",
-         dim="#484f58", accent="#F0883E", key="#F0883E", string="#c9d1d9", number="#e6edf3")
-ACCENT = C["accent"]
+         dim="#484f58", blue="#58a6ff", purple="#bc8cff", green="#3fb950", red="#f85149",
+         orange="#d29922", key="#7ee787", string="#a5d6ff", number="#79c0ff")
 
 
 def font_face(family, file, weight):
@@ -128,10 +128,10 @@ def agent():
     out.append(
         f'<rect x=".5" y="{sb}" width="{W - 1}" height="23.5" fill="{C["bar"]}"/>'
         f'<path d="M.5 {sb}h{W - 1}" stroke="{C["border"]}"/>'
-        f'<rect x="1" y="{sb + 0.5}" width="70" height="23" fill="{ACCENT}"/>'
+        f'<rect x="1" y="{sb + 0.5}" width="70" height="23" fill="{C["blue"]}" fill-opacity=".85"/>'
         f'<text x="36" y="{sb + 16}" text-anchor="middle" font-size="11" font-weight="800" fill="#0d1117">NORMAL</text>'
         f'<text x="84" y="{sb + 16}" font-size="11" fill="{C["muted"]}">agent.yaml</text>'
-        f'<text x="{W - 16}" y="{sb + 16}" text-anchor="end" font-size="11" fill="{C["muted"]}">yaml · utf-8 · ln {len(lines)}, col 1 · <tspan fill="{ACCENT}">● 0 hallucinations</tspan></text>'
+        f'<text x="{W - 16}" y="{sb + 16}" text-anchor="end" font-size="11" fill="{C["muted"]}">yaml · utf-8 · ln {len(lines)}, col 1 · <tspan fill="{C["green"]}">● 0 hallucinations</tspan></text>'
     )
     return window(h, "~/yash/agent.yaml", "\n".join(out))
 
@@ -189,7 +189,7 @@ def section_label(x, y, text, count=None):
 # ───────────────────────────── hero line under the banner ─────────────────────────────
 def hero():
     Wh, H, BG = 1280, 124, "#05070d"
-    words = [("agents.", ACCENT), ("harnesses.", ACCENT), ("inference.", ACCENT)]
+    words = [("agents.", C["blue"]), ("harnesses.", C["purple"]), ("inference.", C["green"])]
     slot = 2.6
     T = slot * len(words)
     css = []
@@ -209,12 +209,14 @@ def hero():
     body = f'''<defs>
   <clipPath id="frame"><rect width="{Wh}" height="{H}" rx="16"/></clipPath>
   <clipPath id="slot"><rect x="900" y="62" width="340" height="44"/></clipPath>
+  <linearGradient id="trd" x1="0" x2="1"><stop offset="0" stop-color="{C["blue"]}"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient>
+  <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
 </defs>
 <g clip-path="url(#frame)">
   <rect width="{Wh}" height="{H}" fill="{BG}"/>
-  <rect width="{Wh}" height="2" fill="{ACCENT}"/>
+  <rect width="{Wh}" height="1.5" fill="url(#edge)"/>
   <text class="mono" x="50" y="46" font-size="15" letter-spacing="3" fill="{C["muted"]}">CURRENTLY</text>
-  <text class="sans rise" x="48" y="94" font-size="29" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="{C["muted"]}">at</tspan> <tspan fill="{ACCENT}">Tradeify</tspan></text>
+  <text class="sans rise" x="48" y="94" font-size="29" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="{C["muted"]}">at</tspan> <tspan fill="url(#trd)">Tradeify</tspan></text>
   <text class="mono" x="1232" y="46" text-anchor="end" font-size="15" letter-spacing="3" fill="{C["muted"]}">BUILDING</text>
   <g clip-path="url(#slot)">{"".join(groups)}</g>
 </g>
@@ -226,16 +228,17 @@ def hero():
 # ───────────────────────────── pull quote ─────────────────────────────
 def quote():
     h = 128
-    body = f'''<rect x=".5" y=".5" width="{W - 1}" height="{h - 1}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>
-<rect x="32" y="30" width="3" height="68" rx="1.5" fill="{ACCENT}"/>
+    body = f'''<defs><linearGradient id="q" x1="0" x2="1"><stop offset="0" stop-color="#f0f6fc"/><stop offset=".55" stop-color="#a5d6ff"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient></defs>
+<rect x=".5" y=".5" width="{W - 1}" height="{h - 1}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>
+<rect x="32" y="30" width="3" height="68" rx="1.5" fill="url(#q)"/>
 <text class="sans rise" x="52" y="50" font-size="16" font-weight="500" fill="{C["muted"]}">The model is the engine. The harness is the car.</text>
-<text class="sans rise" style="animation-delay:.25s" x="51" y="86" font-size="28" font-weight="700" fill="#f0f6fc">I build <tspan fill="{ACCENT}">cars.</tspan></text>
+<text class="sans rise" style="animation-delay:.25s" x="51" y="86" font-size="28" font-weight="700" fill="url(#q)">I build cars.</text>
 <text class="mono" x="52" y="108" font-size="10" letter-spacing="2" fill="{C["dim"]}">ON HARNESS ENGINEERING</text>'''
     return plain(W, h, "quote", body, aria="The model is the engine. The harness is the car. I build cars.")
 
 
 # ───────────────────────────── selected work ─────────────────────────────
-STATUS = {"in progress": ACCENT, "shipped": C["muted"], "hackathon": C["muted"]}
+STATUS = {"in progress": C["orange"], "shipped": C["green"], "hackathon": C["blue"]}
 
 
 def project_card(x, y, w, h, idx, title, status, desc, tags, desc_w, delay_s, extra=""):
@@ -269,11 +272,11 @@ def ledger_art(x, y):
     for i in range(4):
         bx, by = x + i * 62, y + (12 if i % 2 else 0)
         last = i == 3
-        stroke = ACCENT if last else C["border"]
+        stroke = C["purple"] if last else C["border"]
         out.append(f'<rect x="{bx}" y="{by}" width="46" height="56" rx="8" fill="{C["bar"]}" stroke="{stroke}"/>')
         out.append(f'<rect x="{bx + 9}" y="{by + 12}" width="28" height="4" rx="2" fill="{C["dim"]}"/>')
         out.append(f'<rect x="{bx + 9}" y="{by + 22}" width="20" height="4" rx="2" fill="{C["dim"]}"/>')
-        out.append(f'<circle cx="{bx + 23}" cy="{by + 42}" r="5" fill="{ACCENT if last else C["dim"]}"/>')
+        out.append(f'<circle cx="{bx + 23}" cy="{by + 42}" r="5" fill="{C["purple"] if last else C["blue"]}" fill-opacity="{1 if last else .55}"/>')
         if i:
             px, py = bx - 16, by + 28
             out.append(f'<line x1="{px}" y1="{py - (12 if i % 2 else -12)}" x2="{bx}" y2="{py}" stroke="{C["border"]}" stroke-width="1.5" stroke-dasharray="3 3" class="flow"/>')
@@ -309,44 +312,61 @@ def projects():
 
 
 # ───────────────────────────── tools ─────────────────────────────
-TOOLKIT = [("claude", "Claude Code"), ("anthropic", "Anthropic API"), ("openai", "OpenAI"),
-           ("modelcontextprotocol", "MCP"), ("langgraph", "LangGraph"), ("ollama", "Ollama"),
-           ("python", "Python"), ("pytorch", "PyTorch"), ("streamlit", "Streamlit"),
-           ("fastapi", "FastAPI"), ("docker", "Docker"), ("cloudflare", "Cloudflare")]
-
-
 def tools():
-    """Flat 2x6 grid of the tools I'd defend in an interview. Brand logos sit inside class="logo"."""
     icons = json.loads((ASSETS / "icons.json").read_text())
+    groups = [
+        ("agents & LLMs", [("claude", "Claude Code"), ("anthropic", "Anthropic API"), ("openai", "OpenAI"),
+                           ("modelcontextprotocol", "MCP"), ("langchain", "LangChain"), ("langgraph", "LangGraph"),
+                           ("langsmith", "LangSmith"), ("langfuse", "Langfuse"), ("pydantic", "Pydantic"),
+                           ("huggingface", "Hugging Face")]),
+        ("inference", [("vllm", "vLLM"), ("ollama", "Ollama"), ("onnx", "ONNX"), ("nvidia", "CUDA")]),
+        ("ML & data science", [("python", "Python"), ("pytorch", "PyTorch"), ("numpy", "NumPy"), ("pandas", "pandas"),
+                               ("scikitlearn", "scikit-learn"), ("opencv", "OpenCV"), ("jupyter", "Jupyter"),
+                               ("streamlit", "Streamlit")]),
+        ("web & data", [("typescript", "TypeScript"), ("nodedotjs", "Node.js"), ("react", "React"), ("nextdotjs", "Next.js"),
+                        ("tailwindcss", "Tailwind"), ("fastapi", "FastAPI"), ("postgresql", "Postgres"), ("mongodb", "MongoDB"),
+                        ("supabase", "Supabase")]),
+        ("infra", [("docker", "Docker"), ("linux", "Linux"), ("gnubash", "Bash"), ("git", "Git"),
+                   ("githubactions", "GitHub Actions"), ("aws", "AWS"), ("googlecloud", "Google Cloud"),
+                   ("cloudflare", "Cloudflare"), ("vercel", "Vercel")]),
+    ]
     css = (".pop { animation: pop .55s cubic-bezier(.2,.9,.3,1.4) both; transform-box: fill-box; transform-origin: center; }"
            "@keyframes pop { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }")
-    cols, tile, icon, x0 = 6, 96, 40, 28
-    gap = (W - 2 * x0 - cols * tile) / (cols - 1)
-    top = 36
-    rows = (len(TOOLKIT) + cols - 1) // cols
-    h = top + 28 + rows * (tile + 44) + 2
-    out = [section_label(2, 18, "toolkit"),
-           f'<rect x=".5" y="{top + .5}" width="{W - 1}" height="{h - top - 1}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>']
-    for n, (slug, label) in enumerate(TOOLKIT):
-        ic = icons[slug]
-        r, g, b = (int(ic["hex"][k:k + 2], 16) for k in (0, 2, 4))
-        fill = C["text"] if (0.299 * r + 0.587 * g + 0.114 * b) < 70 or ic["hex"] == "FFFFFF" else "#" + ic["hex"]
-        tx = x0 + (n % cols) * (tile + gap)
-        ty = top + 28 + (n // cols) * (tile + 44)
-        ix, iy = tx + (tile - icon) / 2, ty + (tile - icon) / 2
-        if ic.get("inner"):
-            mark = (f'<svg x="{ix:.1f}" y="{iy:.1f}" width="{icon}" height="{icon}" viewBox="0 0 24 24" '
-                    f'fill="{fill}" color="{fill}" fill-rule="evenodd">{ic["inner"]}</svg>')
-        else:
-            mark = f'<path transform="translate({ix:.1f} {iy:.1f}) scale({icon / 24:.4f})" fill="{fill}" d="{ic["path"]}"/>'
-        out.append(
-            f'<g class="pop" style="animation-delay:{0.15 + n * 0.05:.2f}s">'
-            f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="14" fill="{C["bar"]}" stroke="{C["border"]}"/>'
-            f'<g class="logo">{mark}</g>'
-            f'<text class="sans tool-label" x="{tx + tile / 2:.1f}" y="{ty + tile + 22}" text-anchor="middle" '
-            f'font-size="13" fill="{C["muted"]}">{escape(label)}</text></g>'
-        )
-    return plain(W, h, "toolkit", "\n".join(out), css, aria="Toolkit: " + ", ".join(l for _, l in TOOLKIT))
+    out, defs = [section_label(2, 18, "toolkit")], []
+    tile, gap, n = 66, 9.33, 0
+    y = 36
+    out.append(f'<rect x=".5" y="{y + .5}" width="{W - 1}" height="{{H}}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>')
+    y += 34
+    for gname, items in groups:
+        out.append(f'<text class="sans" x="28" y="{y}" font-size="13" font-weight="500" fill="{C["muted"]}">{escape(gname[0].upper() + gname[1:])}</text>')
+        ty = y + 14
+        for j, (slug, label) in enumerate(items):
+            if slug.startswith("@"):
+                mono, hexv = slug[1:].split(":")
+                ic = {"hex": hexv, "path": None, "mono": mono}
+            else:
+                ic = icons[slug]
+            hx = "#" + ic["hex"]
+            r, g, b = (int(ic["hex"][k:k + 2], 16) for k in (0, 2, 4))
+            fill = C["text"] if (0.299 * r + 0.587 * g + 0.114 * b) < 70 else hx
+            if ic.get("inner") and ic["hex"] == "FFFFFF":
+                fill = C["text"]
+            tx = 28 + j * (tile + gap)
+            defs.append(f'<radialGradient id="g{n}" cx=".5" cy=".35" r=".7"><stop offset="0" stop-color="{fill}" stop-opacity=".22"/><stop offset="1" stop-color="{fill}" stop-opacity="0"/></radialGradient>')
+            out.append(
+                f'<g class="pop" style="animation-delay:{0.2 + n * 0.05:.2f}s">'
+                f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="12" fill="{C["bar"]}" stroke="{C["border"]}"/>'
+                f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="12" fill="url(#g{n})"/>'
+                + (f'<svg x="{tx + 18:.1f}" y="{ty + 18}" width="30" height="30" viewBox="0 0 24 24" fill="{C["text"]}" color="{C["text"]}" fill-rule="evenodd">{ic["inner"]}</svg>' if ic.get("inner") else
+                   f'<path transform="translate({tx + 18:.1f} {ty + 18}) scale(1.25)" fill="{fill}" d="{ic["path"]}"/>' if ic["path"] else
+                   f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + 42}" text-anchor="middle" font-size="{22 if len(ic['mono']) <= 3 else 17}" font-weight="700" fill="{fill}">{ic["mono"]}</text>') +
+                f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + tile + 18}" text-anchor="middle" font-size="{12 if len(label) <= 11 else 10.5}" fill="{C["muted"]}">{label}</text></g>'
+            )
+            n += 1
+        y = ty + tile + 52
+    h = y - 12
+    body = f'<defs>{"".join(defs)}</defs>' + "\n".join(out).replace("{H}", str(h - 37))
+    return plain(W, h, "toolkit", body, css, aria="Toolkit: " + ", ".join(l for _, it in groups for _, l in it))
 
 
 def publish(name, svg):
