@@ -180,6 +180,91 @@ def svg(s, user, t):
 </svg>'''
 
 
+PHRASES = [
+    "harness engineering > prompt engineering",
+    "building agents that remember what they did, and why",
+    "junior agentic coder @ tradeify",
+    "research. build. eval. repeat.",
+]
+
+
+def hero_svg(s):
+    """Typing terminal line + live stat chips. Always dark, to sit under the banner."""
+    W, H, BG = 1280, 150, "#05070d"
+    font = "'JBM',ui-monospace,Menlo,Consolas,monospace"
+    size, cw = 22, 22 * 0.6
+    x0 = 48 + len("yash@agentic:~$ ") * cw
+    n, T = len(PHRASES), 5.0 * len(PHRASES)
+    css, groups = [], []
+    for i, ph in enumerate(PHRASES):
+        L = len(ph) * cw
+        a, b, c, d, e = [100 * (i + f) / n for f in (0, 0.42, 0.80, 0.94, 1)]
+        css.append(
+            (f"@keyframes v{i}{{0%,{e - 0.01:.3f}%{{opacity:1}}{e:.3f}%,100%{{opacity:0}}}}" if i == 0 else
+             f"@keyframes v{i}{{0%,{a - 0.01:.3f}%{{opacity:0}}{a:.3f}%,{e - 0.01:.3f}%{{opacity:1}}{e:.3f}%,100%{{opacity:0}}}}") +
+            f"@keyframes t{i}{{0%,{a:.3f}%{{transform:translateX(0);animation-timing-function:steps({len(ph)},end)}}"
+            f"{b:.3f}%{{transform:translateX({L:.1f}px)}}"
+            f"{c:.3f}%{{transform:translateX({L:.1f}px);animation-timing-function:steps({len(ph)},end)}}"
+            f"{d:.3f}%,100%{{transform:translateX(0)}}}}"
+            f".v{i}{{opacity:0;animation:v{i} {T}s linear infinite}}"
+            f".t{i}{{animation:t{i} {T}s linear infinite}}"
+        )
+        groups.append(
+            f'<g class="v{i}"><text x="{x0:.1f}" y="62" font-size="{size}" fill="#e6edf3">{ph}</text>'
+            f'<rect class="t{i}" x="{x0:.1f}" y="36" width="{L + 16:.1f}" height="34" fill="{BG}"/>'
+            f'<rect class="t{i}" x="{x0 + 1:.1f}" y="43" width="11" height="24" rx="1.5" fill="#58a6ff"/></g>'
+        )
+
+    chips_data = [
+        (f"{s['total']:,}", "contributions", "#58a6ff"),
+        (f"{s['current']}d", "streak", "#3fb950"),
+        ("claude-code", "harness", "#d97757"),
+        ("1 paper", "1 patent", "#bc8cff"),
+        ("CSE-AI", "VIT Pune", "#8b949e"),
+    ]
+    chips, x = [], 48
+    for i, (val, label, col) in enumerate(chips_data):
+        w = 34 + 8.4 * len(val) + 7.8 * len(label) + 8
+        chips.append(
+            f'<g class="chip" style="animation-delay:{0.15 + i * 0.1:.2f}s">'
+            f'<rect x="{x}" y="96" width="{w:.1f}" height="32" rx="16" fill="#0d1117" stroke="#21262d"/>'
+            f'<circle cx="{x + 17}" cy="112" r="4" fill="{col}"/>'
+            f'<text x="{x + 29}" y="117" font-size="14" font-weight="800" fill="#e6edf3">{val}'
+            f'<tspan font-weight="500" font-size="13" fill="#8b949e" dx="8">{label}</tspan></text></g>'
+        )
+        x += w + 10
+
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{' / '.join(PHRASES)}">
+<style>
+  {font_face("JBM", "jbmono-500.woff2", 500)}
+  {font_face("JBM", "jbmono-800.woff2", 800)}
+  text {{ font-family: {font}; }}
+  .chip {{ animation: chip .6s cubic-bezier(.2,.8,.2,1) both; }}
+  .live {{ animation: live 1.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }}
+  @keyframes chip {{ from {{ opacity: 0; transform: translateY(8px); }} to {{ opacity: 1; transform: none; }} }}
+  @keyframes live {{ 0% {{ transform: scale(1); opacity: .9; }} 100% {{ transform: scale(2.6); opacity: 0; }} }}
+  {"".join(css)}
+</style>
+<defs>
+  <clipPath id="c"><rect width="{W}" height="{H}" rx="16"/></clipPath>
+  <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
+  <radialGradient id="glow"><stop offset="0" stop-color="#8957e5" stop-opacity=".28"/><stop offset="1" stop-color="#8957e5" stop-opacity="0"/></radialGradient>
+</defs>
+<g clip-path="url(#c)">
+  <rect width="{W}" height="{H}" fill="{BG}"/>
+  <ellipse cx="{W - 120}" cy="{H + 30}" rx="380" ry="100" fill="url(#glow)"/>
+  <rect width="{W}" height="1.5" fill="url(#edge)"/>
+  <text x="48" y="62" font-size="{size}"><tspan fill="#3fb950">yash</tspan><tspan fill="#6e7681">@</tspan><tspan fill="#bc8cff">agentic</tspan><tspan fill="#6e7681">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#6e7681">$ </tspan></text>
+  {"".join(groups)}
+  <circle cx="{W - 120}" cy="54" r="4" fill="#3fb950"/><circle cx="{W - 120}" cy="54" r="4" fill="#3fb950" class="live"/>
+  <text x="{W - 108}" y="59" font-size="13" fill="#8b949e">online</text>
+  <line x1="48" y1="82" x2="{W - 48}" y2="82" stroke="#21262d" stroke-dasharray="2 5"/>
+  {"".join(chips)}
+</g>
+<rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="16" fill="none" stroke="#21262d"/>
+</svg>'''
+
+
 def main():
     user, out = sys.argv[1], sys.argv[2]
     os.makedirs(out, exist_ok=True)
@@ -189,6 +274,8 @@ def main():
         suffix = "-dark" if name == "dark" else ""
         with open(os.path.join(out, f"contributions{suffix}.svg"), "w") as f:
             f.write(svg(s, user, theme))
+    with open(os.path.join(out, "hero.svg"), "w") as f:
+        f.write(hero_svg(s))
     with open(os.path.join(out, "contributions.json"), "w") as f:
         json.dump({"schemaVersion": 1, "label": "contributions", "message": f"{s['total']:,}",
                    "color": "58a6ff", "labelColor": "0d1117", "style": "flat-square"}, f)

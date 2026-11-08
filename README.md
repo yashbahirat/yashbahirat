@@ -1,20 +1,7 @@
 <!-- ───────────────────────── HEADER ───────────────────────── -->
 <img width="100%" src="./assets/banner.svg" alt="Yash Bahirat: agents, harnesses, inference" />
 
-<p align="center">
-  <a href="https://github.com/yashbahirat">
-    <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=2800&pause=900&color=58A6FF&center=true&vCenter=true&width=640&lines=Junior+Agentic+Coder+%40+Tradeify;Harness+engineering+%3E+prompt+engineering;Building+agents+that+remember+what+they+did+and+why;Research.+Build.+Eval.+Repeat." alt="typing" />
-  </a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fyashbahirat%2Fyashbahirat%2Foutput%2Fcontributions.json&logo=github&logoColor=white" />
-  <img src="https://img.shields.io/badge/status-shipping-2ea043?style=flat-square&labelColor=0d1117" />
-  <img src="https://img.shields.io/badge/harness-claude--code-D97757?style=flat-square&labelColor=0d1117&logo=claude&logoColor=D97757" />
-  <img src="https://img.shields.io/badge/papers-1-58a6ff?style=flat-square&labelColor=0d1117" />
-  <img src="https://img.shields.io/badge/patents-1-a371f7?style=flat-square&labelColor=0d1117" />
-  <img src="https://komarev.com/ghpvc/?username=yashbahirat&style=flat-square&color=8b949e&label=visitors" />
-</p>
+<img width="100%" src="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/hero.svg" alt="harness engineering > prompt engineering" />
 
 <p align="center">
   <picture>
