@@ -314,11 +314,11 @@ def projects():
 def tools():
     icons = json.loads((ASSETS / "icons.json").read_text())
     groups = [
-        ("agents & LLMs", [("claude", "Claude Code"), ("anthropic", "Anthropic API"), ("@OAI:000000", "OpenAI"),
+        ("agents & LLMs", [("claude", "Claude Code"), ("anthropic", "Anthropic API"), ("openai", "OpenAI"),
                            ("modelcontextprotocol", "MCP"), ("langchain", "LangChain"), ("langgraph", "LangGraph"),
-                           ("@LS:1C3C3C", "LangSmith"), ("@LF:E11312", "Langfuse"), ("pydantic", "Pydantic"),
+                           ("langsmith", "LangSmith"), ("langfuse", "Langfuse"), ("pydantic", "Pydantic"),
                            ("huggingface", "Hugging Face")]),
-        ("inference", [("vllm", "vLLM"), ("ollama", "Ollama"), ("onnx", "ONNX"), ("nvidia", "NVIDIA"), ("@CUDA:76B900", "CUDA")]),
+        ("inference", [("vllm", "vLLM"), ("ollama", "Ollama"), ("onnx", "ONNX"), ("nvidia", "CUDA")]),
         ("ML & data science", [("python", "Python"), ("pytorch", "PyTorch"), ("numpy", "NumPy"), ("pandas", "pandas"),
                                ("scikitlearn", "scikit-learn"), ("opencv", "OpenCV"), ("jupyter", "Jupyter"),
                                ("streamlit", "Streamlit")]),
@@ -326,7 +326,7 @@ def tools():
                         ("tailwindcss", "Tailwind"), ("fastapi", "FastAPI"), ("postgresql", "Postgres"), ("mongodb", "MongoDB"),
                         ("supabase", "Supabase")]),
         ("infra", [("docker", "Docker"), ("linux", "Linux"), ("gnubash", "Bash"), ("git", "Git"),
-                   ("githubactions", "GitHub Actions"), ("@AWS:FF9900", "AWS"), ("googlecloud", "Google Cloud"),
+                   ("githubactions", "GitHub Actions"), ("aws", "AWS"), ("googlecloud", "Google Cloud"),
                    ("cloudflare", "Cloudflare"), ("vercel", "Vercel")]),
     ]
     css = (".pop { animation: pop .55s cubic-bezier(.2,.9,.3,1.4) both; transform-box: fill-box; transform-origin: center; }"
@@ -348,13 +348,16 @@ def tools():
             hx = "#" + ic["hex"]
             r, g, b = (int(ic["hex"][k:k + 2], 16) for k in (0, 2, 4))
             fill = C["text"] if (0.299 * r + 0.587 * g + 0.114 * b) < 70 else hx
+            if ic.get("inner") and ic["hex"] == "FFFFFF":
+                fill = C["text"]
             tx = 28 + j * (tile + gap)
             defs.append(f'<radialGradient id="g{n}" cx=".5" cy=".35" r=".7"><stop offset="0" stop-color="{fill}" stop-opacity=".22"/><stop offset="1" stop-color="{fill}" stop-opacity="0"/></radialGradient>')
             out.append(
                 f'<g class="pop" style="animation-delay:{0.2 + n * 0.05:.2f}s">'
                 f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="12" fill="{C["bar"]}" stroke="{C["border"]}"/>'
                 f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="12" fill="url(#g{n})"/>'
-                + (f'<path transform="translate({tx + 18:.1f} {ty + 18}) scale(1.25)" fill="{fill}" d="{ic["path"]}"/>' if ic["path"] else
+                + (f'<svg x="{tx + 18:.1f}" y="{ty + 18}" width="30" height="30" viewBox="0 0 24 24" fill="{C["text"]}" color="{C["text"]}" fill-rule="evenodd">{ic["inner"]}</svg>' if ic.get("inner") else
+                   f'<path transform="translate({tx + 18:.1f} {ty + 18}) scale(1.25)" fill="{fill}" d="{ic["path"]}"/>' if ic["path"] else
                    f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + 42}" text-anchor="middle" font-size="{22 if len(ic['mono']) <= 3 else 17}" font-weight="700" fill="{fill}">{ic["mono"]}</text>') +
                 f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + tile + 18}" text-anchor="middle" font-size="{12 if len(label) <= 11 else 10.5}" fill="{C["muted"]}">{label}</text></g>'
             )
