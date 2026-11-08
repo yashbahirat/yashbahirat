@@ -1,7 +1,7 @@
 <!-- ───────────────────────── HEADER ───────────────────────── -->
 <img width="100%" src="./assets/banner.svg" alt="Yash Bahirat: agents, harnesses, inference" />
 
-<img width="100%" src="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/hero.svg?v=3" alt="harness engineering > prompt engineering" />
+<img width="100%" src="./assets/hero.svg" alt="Junior Agentic Coder @ Tradeify" />
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/contributions-badge.svg" alt="contributions" />

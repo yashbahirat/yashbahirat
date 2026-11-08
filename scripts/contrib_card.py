@@ -284,6 +284,10 @@ def badge_svg(label, message, color="#58a6ff", label_bg="#0d1117"):
 
 
 def main():
+    if sys.argv[1] == "--hero":  # static strip, committed to assets/ (no live data in it)
+        with open(sys.argv[2], "w") as f:
+            f.write(hero_svg(None))
+        return
     user, out = sys.argv[1], sys.argv[2]
     os.makedirs(out, exist_ok=True)
     days = mock_days() if os.environ.get("MOCK") else fetch_days(user)
@@ -294,8 +298,6 @@ def main():
             f.write(svg(s, user, theme))
     with open(os.path.join(out, "contributions-badge.svg"), "w") as f:
         f.write(badge_svg("contributions", f"{s['total']:,}"))
-    with open(os.path.join(out, "hero.svg"), "w") as f:
-        f.write(hero_svg(s))
     with open(os.path.join(out, "contributions.json"), "w") as f:
         json.dump({"schemaVersion": 1, "label": "contributions", "message": f"{s['total']:,}",
                    "color": "58a6ff", "labelColor": "0d1117", "style": "flat-square"}, f)
