@@ -50,43 +50,6 @@ def delay(i, base=0.25, step=0.14):
     return f'style="animation-delay:{base + i * step:.2f}s"'
 
 
-# ───────────────────────────── boot ─────────────────────────────
-def boot():
-    rows = [
-        (True, "loading harness", "claude-code"),
-        (True, "mounting tools", "mcp · bash · fs · browser"),
-        (True, "spawning subagents", "4/4 healthy"),
-        (True, "memory", "provenance-tracked"),
-        (True, "evals", "green"),
-        (False, "prompt engineering", "superseded by harness engineering"),
-        (False, "sleep schedule", "not found"),
-    ]
-    cw, x_label, x_val = 13 * 0.6, 100, 380
-    out = [f'<text x="28" y="60" font-size="13" fill="{C["muted"]}"><tspan fill="{C["green"]}">$</tspan> ./boot --verbose</text>']
-    y = 92
-    for i, (ok, label, val) in enumerate(rows):
-        col = C["green"] if ok else C["red"]
-        dots = "." * int((x_val - 12 - (x_label + len(label) * cw)) / cw)
-        out.append(
-            f'<g class="in" {delay(i)}>'
-            f'<rect x="28" y="{y - 13}" width="56" height="18" rx="4" fill="{col}" fill-opacity=".15" stroke="{col}" stroke-opacity=".5"/>'
-            f'<text x="56" y="{y}" text-anchor="middle" font-size="11" font-weight="800" fill="{col}">{"OK" if ok else "FAIL"}</text>'
-            f'<text x="{x_label}" y="{y}" font-size="13" fill="{C["text"]}">{label} <tspan fill="{C["dim"]}">{dots}</tspan></text>'
-            f'<text x="{x_val}" y="{y}" font-size="13" fill="{col if not ok else C["blue"]}">{escape(val)}</text></g>'
-        )
-        y += 26
-    n = len(rows)
-    out.append(f'<g class="in" {delay(n)}><text x="28" y="{y + 6}" font-size="13" fill="{C["muted"]}">ready. awaiting task<tspan class="blink" fill="{C["text"]}"> ▋</tspan></text></g>')
-    qy = y + 52
-    out.append(f'<line x1="28" y1="{qy - 26}" x2="{W - 28}" y2="{qy - 26}" stroke="{C["border"]}" stroke-dasharray="2 5"/>')
-    out.append(
-        f'<defs><linearGradient id="q" x1="0" x2="1"><stop offset="0" stop-color="{C["blue"]}"/><stop offset="1" stop-color="{C["purple"]}"/></linearGradient></defs>'
-        f'<g class="in" {delay(n + 1)}><text x="28" y="{qy}" font-size="15" font-weight="800" fill="url(#q)">'
-        f'The model is the engine. The harness is the car. I build cars.</text></g>'
-    )
-    return window(qy + 26, "yash@agentic: ~ — ./boot --verbose", "\n".join(out))
-
-
 # ───────────────────────────── agent.yaml ─────────────────────────────
 AGENT_YAML = '''agent:
   name: Yash Bahirat
@@ -172,91 +135,201 @@ def agent():
     return window(h, "~/yash/agent.yaml", "\n".join(out))
 
 
-# ───────────────────────────── ps / htop ─────────────────────────────
-def procs():
-    css = (".fill { animation: fill 1.2s cubic-bezier(.2,.8,.2,1) both; transform-box: fill-box; transform-origin: left; }"
-           "@keyframes fill { from { transform: scaleX(0); } to { transform: none; } }"
-           ".throb { animation: throb 2.2s ease-in-out infinite; }"
-           "@keyframes throb { 50% { opacity: .55; } }")
+# ───────────────────────────── shared editorial bits ─────────────────────────────
+from fontTools.ttLib import TTFont  # noqa: E402
+
+SANS = "'SG',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif"
+_metrics = {}
+
+
+def text_width(t, size, weight=500):
+    if weight not in _metrics:
+        f = TTFont(ASSETS / "fonts" / f"spacegrotesk-{weight}.woff2")
+        _metrics[weight] = (f.getBestCmap(), f["hmtx"], f["head"].unitsPerEm)
+    cmap, hmtx, upm = _metrics[weight]
+    return sum(hmtx[cmap[ord(ch)]][0] if ord(ch) in cmap else upm * 0.55 for ch in t) * size / upm
+
+
+def wrap(t, size, width, weight=500):
+    lines, cur = [], ""
+    for word in t.split():
+        trial = f"{cur} {word}".strip()
+        if text_width(trial, size, weight) <= width:
+            cur = trial
+        else:
+            lines.append(cur)
+            cur = word
+    return lines + [cur]
+
+
+def plain(w, h, label, body, extra_css="", aria=""):
+    """Card without fake window chrome: small label top-left, content below."""
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(aria or label)}">
+<style>
+  {font_face("SG", "spacegrotesk-500.woff2", 500)}
+  {font_face("SG", "spacegrotesk-700.woff2", 700)}
+  {font_face("JBM", "jbmono-500.woff2", 500)}
+  .sans {{ font-family: {SANS}; }}
+  .mono {{ font-family: {MONO}; }}
+  .rise {{ animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }}
+  @keyframes rise {{ from {{ opacity: 0; transform: translateY(8px); }} to {{ opacity: 1; transform: none; }} }}
+  {extra_css}
+</style>
+{body}
+</svg>'''
+
+
+def section_label(x, y, text, count=None):
+    c = f'<tspan fill="{C["dim"]}">  {count}</tspan>' if count else ""
+    return (f'<text class="mono" x="{x}" y="{y}" font-size="11" letter-spacing="2" fill="{C["muted"]}">'
+            f'{escape(text.upper())}{c}</text>')
+
+
+# ───────────────────────────── hero line under the banner ─────────────────────────────
+def hero():
+    Wh, H, BG = 1280, 140, "#05070d"
+    words = [("agents.", C["blue"]), ("harnesses.", C["purple"]), ("inference.", C["green"])]
+    slot = 2.6
+    T = slot * len(words)
+    css = []
+    groups = []
+    for i, (wd, col) in enumerate(words):
+        a = 100 * i / len(words)
+        b = 100 * (i * slot + 0.45) / T
+        c = 100 * ((i + 1) * slot - 0.45) / T
+        e = 100 * (i + 1) * slot / T
+        pre = f"0%,{a - 0.01:.2f}%{{opacity:0;transform:translateY(40px)}}" if i else ""
+        css.append(
+            f"@keyframes w{i}{{{pre}{a:.2f}%{{opacity:0;transform:translateY(40px)}}"
+            f"{b:.2f}%,{c:.2f}%{{opacity:1;transform:none}}"
+            f"{e:.2f}%,100%{{opacity:0;transform:translateY(-40px)}}}}"
+            f".w{i}{{animation:w{i} {T}s cubic-bezier(.6,0,.2,1) infinite}}")
+        groups.append(f'<text class="sans w{i}" x="1232" y="102" text-anchor="end" font-size="46" font-weight="700" fill="{col}">{wd}</text>')
+    body = f'''<defs>
+  <clipPath id="frame"><rect width="{Wh}" height="{H}" rx="16"/></clipPath>
+  <clipPath id="slot"><rect x="880" y="56" width="360" height="62"/></clipPath>
+  <linearGradient id="trd" x1="0" x2="1"><stop offset="0" stop-color="{C["blue"]}"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient>
+  <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
+</defs>
+<g clip-path="url(#frame)">
+  <rect width="{Wh}" height="{H}" fill="{BG}"/>
+  <rect width="{Wh}" height="1.5" fill="url(#edge)"/>
+  <text class="mono" x="50" y="46" font-size="15" letter-spacing="3" fill="{C["muted"]}">CURRENTLY</text>
+  <text class="sans rise" x="46" y="102" font-size="46" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="{C["muted"]}">at</tspan> <tspan fill="url(#trd)">Tradeify</tspan></text>
+  <text class="mono" x="1232" y="46" text-anchor="end" font-size="15" letter-spacing="3" fill="{C["muted"]}">BUILDING</text>
+  <g clip-path="url(#slot)">{"".join(groups)}</g>
+</g>
+<rect x=".5" y=".5" width="{Wh - 1}" height="{H - 1}" rx="16" fill="none" stroke="#21262d"/>'''
+    return plain(Wh, H, "Junior Agentic Coder at Tradeify", body, "".join(css),
+                 aria="Junior Agentic Coder at Tradeify, building agents, harnesses and inference")
+
+
+# ───────────────────────────── pull quote ─────────────────────────────
+def quote():
+    h = 190
+    body = f'''<defs><linearGradient id="q" x1="0" x2="1"><stop offset="0" stop-color="#f0f6fc"/><stop offset=".55" stop-color="#a5d6ff"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient></defs>
+<rect x=".5" y=".5" width="{W - 1}" height="{h - 1}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>
+<rect x="32" y="36" width="3" height="118" rx="1.5" fill="url(#q)"/>
+<text class="sans rise" x="60" y="72" font-size="24" font-weight="500" fill="{C["muted"]}">The model is the engine. The harness is the car.</text>
+<text class="sans rise" style="animation-delay:.25s" x="58" y="128" font-size="48" font-weight="700" fill="url(#q)">I build cars.</text>
+<text class="mono" x="60" y="156" font-size="11" letter-spacing="2" fill="{C["dim"]}">ON HARNESS ENGINEERING</text>'''
+    return plain(W, h, "quote", body, aria="The model is the engine. The harness is the car. I build cars.")
+
+
+# ───────────────────────────── selected work ─────────────────────────────
+STATUS = {"in progress": C["orange"], "shipped": C["green"], "hackathon": C["blue"]}
+
+
+def project_card(x, y, w, h, idx, title, status, desc, tags, desc_w, delay_s, extra=""):
+    col = STATUS[status]
+    sw = len(status) * 6.6 + 26
+    out = [f'<g class="rise" style="animation-delay:{delay_s:.2f}s">',
+           f'<rect x="{x + .5}" y="{y + .5}" width="{w - 1}" height="{h - 1}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>',
+           f'<text class="mono" x="{x + 24}" y="{y + 34}" font-size="11" letter-spacing="2" fill="{C["dim"]}">{idx}</text>',
+           f'<rect x="{x + w - 24 - sw:.1f}" y="{y + 20}" width="{sw:.1f}" height="20" rx="10" fill="{col}" fill-opacity=".12" stroke="{col}" stroke-opacity=".4"/>',
+           f'<circle cx="{x + w - 24 - sw + 11:.1f}" cy="{y + 30}" r="3" fill="{col}"/>',
+           f'<text class="mono" x="{x + w - 24 - sw + 19:.1f}" y="{y + 34}" font-size="11" fill="{col}">{status}</text>',
+           f'<text class="sans" x="{x + 24}" y="{y + 70}" font-size="22" font-weight="700" fill="#f0f6fc">{escape(title)}</text>']
+    ly = y + 98
+    for line in wrap(desc, 14, desc_w):
+        out.append(f'<text class="sans" x="{x + 24}" y="{ly}" font-size="14" fill="#c9d1d9">{escape(line)}</text>')
+        ly += 21
+    tx = x + 24
+    for t in tags:
+        tw = len(t) * 6.6 + 16
+        out.append(f'<rect x="{tx:.1f}" y="{y + h - 40}" width="{tw:.1f}" height="22" rx="6" fill="{C["bar"]}" stroke="{C["border"]}"/>'
+                   f'<text class="mono" x="{tx + 8:.1f}" y="{y + h - 25}" font-size="11" fill="{C["muted"]}">{escape(t)}</text>')
+        tx += tw + 8
+    out.append(extra)
+    out.append("</g>")
+    return "".join(out)
+
+
+def ledger_art(x, y):
+    """Small chained-blocks motif for MPTL: each memory linked to the one before it."""
     out = []
+    for i in range(4):
+        bx, by = x + i * 62, y + (12 if i % 2 else 0)
+        last = i == 3
+        stroke = C["purple"] if last else C["border"]
+        out.append(f'<rect x="{bx}" y="{by}" width="46" height="56" rx="8" fill="{C["bar"]}" stroke="{stroke}"/>')
+        out.append(f'<rect x="{bx + 9}" y="{by + 12}" width="28" height="4" rx="2" fill="{C["dim"]}"/>')
+        out.append(f'<rect x="{bx + 9}" y="{by + 22}" width="20" height="4" rx="2" fill="{C["dim"]}"/>')
+        out.append(f'<circle cx="{bx + 23}" cy="{by + 42}" r="5" fill="{C["purple"] if last else C["blue"]}" fill-opacity="{1 if last else .55}"/>')
+        if i:
+            px, py = bx - 16, by + 28
+            out.append(f'<line x1="{px}" y1="{py - (12 if i % 2 else -12)}" x2="{bx}" y2="{py}" stroke="{C["border"]}" stroke-width="1.5" stroke-dasharray="3 3" class="flow"/>')
+    return "".join(out)
 
-    def meter(y, label, pct, col, i):
-        x0, w = 124, 270
-        out.append(
-            f'<text x="28" y="{y}" font-size="12" fill="{C["blue"]}" font-weight="800">{label}</text>'
-            f'<text x="{x0 - 8}" y="{y}" font-size="12" fill="{C["muted"]}">[</text>'
-            f'<rect x="{x0}" y="{y - 10}" width="{w}" height="12" rx="2" fill="{C["bar"]}"/>'
-            f'<rect class="fill throb" style="animation-delay:{0.2 + i * 0.15:.2f}s,0s" x="{x0}" y="{y - 10}" width="{w * pct / 100:.0f}" height="12" rx="2" fill="{col}"/>'
-            f'<text x="{x0 + w + 4}" y="{y}" font-size="12" fill="{C["muted"]}">] <tspan fill="{C["text"]}">{pct}%</tspan></text>'
-        )
 
-    meter(58, "focus", 94, C["green"], 0)
-    meter(78, "curiosity", 100, C["purple"], 1)
-    meter(98, "sleep", 12, C["red"], 2)
-    out.append(
-        f'<text x="470" y="58" font-size="12" fill="{C["muted"]}">Tasks: <tspan fill="{C["text"]}" font-weight="800">3</tspan>, <tspan fill="{C["green"]}" font-weight="800">2 running</tspan></text>'
-        f'<text x="470" y="78" font-size="12" fill="{C["muted"]}">Load average: <tspan fill="{C["text"]}">always</tspan></text>'
-        f'<text x="470" y="98" font-size="12" fill="{C["muted"]}">Uptime: <tspan fill="{C["text"]}">shipping</tspan></text>'
-    )
-
-    hy = 124
-    out.append(f'<rect x="1" y="{hy - 14}" width="{W - 2}" height="20" fill="{C["green"]}"/>')
-    for x, t in ((28, "PID"), (78, "S"), (108, "STATE"), (196, "COMMAND")):
-        out.append(f'<text x="{x}" y="{hy}" font-size="12" font-weight="800" fill="#0d1117">{t}</text>')
-
-    rows = [
-        ("001", "R", "running", C["green"], "MPTL", "Memory Provenance & Trust Ledger · auditable memory for LLM agents"),
-        ("002", "S", "exited 0", C["muted"], "RegulOS", "cross-jurisdictional AI-compliance conflict detection"),
-        ("003", "R", "running", C["green"], "Sovereign Agentic Workbench", "air-gapped, on-prem agentic AI for industrial operations"),
-    ]
-    y = hy + 30
-    for i, (pid, s, state, col, name, desc) in enumerate(rows):
-        hl = i == 0
-        if hl:
-            out.append(f'<rect x="1" y="{y - 16}" width="{W - 2}" height="44" fill="{C["blue"]}" fill-opacity=".12"/>'
-                       f'<rect x="1" y="{y - 16}" width="3" height="44" fill="{C["blue"]}"/>')
-        dot = (f'<circle class="throb" cx="{110}" cy="{y - 4}" r="3.5" fill="{col}"/>' if s == "R"
-               else f'<circle cx="110" cy="{y - 4}" r="3.5" fill="none" stroke="{col}"/>')
-        out.append(
-            f'<g class="in" {delay(i, 0.5, 0.15)}>'
-            f'<text x="28" y="{y}" font-size="12.5" fill="{C["muted"]}">{pid}</text>'
-            f'<text x="78" y="{y}" font-size="12.5" font-weight="800" fill="{col}">{s}</text>{dot}'
-            f'<text x="120" y="{y}" font-size="12" fill="{col}">{state}</text>'
-            f'<text x="196" y="{y}" font-size="13" font-weight="800" fill="{C["text"]}">{escape(name)}</text>'
-            f'<text x="196" y="{y + 18}" font-size="11.5" fill="{C["muted"]}">{escape(desc)}</text></g>'
-        )
-        y += 50
-
-    fy = y - 4
-    keys = [("F1", "hire"), ("F2", "collab"), ("F3", "research"), ("F5", "ship"), ("F10", "quit (never)")]
-    x = 28
-    for k, label in keys:
-        kw = len(k) * 7.8 + 8
-        out.append(f'<rect x="{x}" y="{fy - 12}" width="{kw:.0f}" height="17" fill="{C["blue"]}"/>'
-                   f'<text x="{x + 4}" y="{fy}" font-size="12" font-weight="800" fill="#0d1117">{k}</text>'
-                   f'<text x="{x + kw + 4:.0f}" y="{fy}" font-size="12" fill="{C["text"]}">{label}</text>')
-        x += kw + 12 + len(label) * 7.2 + 10
-    return window(fy + 20, "htop — yash@agentic", "\n".join(out), css)
+def projects():
+    gap, top = 16, 36
+    fh, hh = 204, 228
+    half = (W - gap) / 2
+    css = (".flow { animation: flow 1.6s linear infinite; } @keyframes flow { to { stroke-dashoffset: -12; } }")
+    body = [section_label(2, 18, "selected work", "03")]
+    body.append(project_card(
+        0, top, W, fh, "01", "MPTL: Memory Provenance & Trust Ledger", "in progress",
+        "A tamper-evident ledger for agent memory. Every memory an LLM agent writes is traced back to "
+        "its source, so you can audit what it knows and decide what to trust.",
+        ["LLM agents", "provenance", "Python", "Claude Code"], 460, 0.1,
+        extra=ledger_art(530, top + 70)))
+    y2 = top + fh + gap
+    body.append(project_card(
+        0, y2, half, hh, "02", "Sovereign Agentic Workbench", "hackathon",
+        "Air-gapped agentic AI for refinery engineers: local GGUF models, local RAG, sandboxed code "
+        "execution and P&ID vision. Team build for Smart India Hackathon.",
+        ["local LLMs", "RAG", "sandboxing"], half - 48, 0.25))
+    body.append(project_card(
+        half + gap, y2, half, hh, "03", "RegulOS", "shipped",
+        "Detects where GDPR, the EU AI Act and India's DPDP Act conflict for the same AI system, "
+        "before it ships.",
+        ["compliance", "GDPR", "EU AI Act", "DPDP"], half - 48, 0.4))
+    h = y2 + hh + 2
+    return plain(W, h, "selected work", "".join(body), css,
+                 aria="Selected work: MPTL, Sovereign Agentic Workbench, RegulOS")
 
 
 # ───────────────────────────── tools ─────────────────────────────
 def tools():
     icons = json.loads((ASSETS / "icons.json").read_text())
     groups = [
-        ("# agent stack", [("claude", "Claude Code"), ("modelcontextprotocol", "MCP"), ("langchain", "LangGraph"),
-                           ("vllm", "vLLM"), ("ollama", "Ollama"), ("huggingface", "Hugging Face")]),
-        ("# core", [("python", "Python"), ("pytorch", "PyTorch"), ("typescript", "TypeScript"), ("fastapi", "FastAPI"),
-                    ("docker", "Docker"), ("linux", "Linux"), ("gnubash", "Bash"), ("cloudflare", "Cloudflare"),
-                    ("postgresql", "Postgres"), ("git", "Git")]),
+        ("agent stack", [("claude", "Claude Code"), ("modelcontextprotocol", "MCP"), ("langchain", "LangGraph"),
+                         ("vllm", "vLLM"), ("ollama", "Ollama"), ("huggingface", "Hugging Face")]),
+        ("core", [("python", "Python"), ("pytorch", "PyTorch"), ("typescript", "TypeScript"), ("fastapi", "FastAPI"),
+                  ("docker", "Docker"), ("linux", "Linux"), ("gnubash", "Bash"), ("cloudflare", "Cloudflare"),
+                  ("postgresql", "Postgres"), ("git", "Git")]),
     ]
     css = (".pop { animation: pop .55s cubic-bezier(.2,.9,.3,1.4) both; transform-box: fill-box; transform-origin: center; }"
            "@keyframes pop { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }")
-    out = [f'<text x="28" y="60" font-size="13" fill="{C["muted"]}"><tspan fill="{C["green"]}">$</tspan> which --all tools</text>']
-    tile, gap, y, n = 66, 9.33, 82, 0
-    defs = []
+    out, defs = [section_label(2, 18, "toolkit")], []
+    tile, gap, n = 66, 9.33, 0
+    y = 36
+    out.append(f'<rect x=".5" y="{y + .5}" width="{W - 1}" height="{{H}}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>')
+    y += 34
     for gname, items in groups:
-        out.append(f'<text x="28" y="{y}" font-size="12" fill="{C["dim"]}">{gname}</text>')
-        ty = y + 12
+        out.append(f'<text class="sans" x="28" y="{y}" font-size="13" font-weight="500" fill="{C["muted"]}">{gname.capitalize()}</text>')
+        ty = y + 14
         for j, (slug, label) in enumerate(items):
             ic = icons[slug]
             hx = "#" + ic["hex"]
@@ -269,15 +342,16 @@ def tools():
                 f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="12" fill="{C["bar"]}" stroke="{C["border"]}"/>'
                 f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="12" fill="url(#g{n})"/>'
                 f'<path transform="translate({tx + 18:.1f} {ty + 18}) scale(1.25)" fill="{fill}" d="{ic["path"]}"/>'
-                f'<text x="{tx + tile / 2:.1f}" y="{ty + tile + 17}" text-anchor="middle" font-size="11" fill="{C["muted"]}">{label}</text></g>'
+                f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + tile + 18}" text-anchor="middle" font-size="12" fill="{C["muted"]}">{label}</text></g>'
             )
             n += 1
-        y = ty + tile + 48
-    body = f'<defs>{"".join(defs)}</defs>' + "\n".join(out)
-    return window(y - 18, "~/yash — which --all tools", body, css)
+        y = ty + tile + 52
+    h = y - 12
+    body = f'<defs>{"".join(defs)}</defs>' + "\n".join(out).replace("{H}", str(h - 37))
+    return plain(W, h, "toolkit", body, css, aria="Toolkit: " + ", ".join(l for _, it in groups for _, l in it))
 
 
 if __name__ == "__main__":
-    for name, fn in (("boot", boot), ("agent", agent), ("procs", procs), ("tools", tools)):
+    for name, fn in (("hero", hero), ("quote", quote), ("agent", agent), ("projects", projects), ("tools", tools)):
         (ASSETS / f"{name}.svg").write_text(fn())
         print("wrote", f"assets/{name}.svg")

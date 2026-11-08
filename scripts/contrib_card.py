@@ -180,76 +180,6 @@ def svg(s, user, t):
 </svg>'''
 
 
-ROLE_TAG = "@ Tradeify"
-PHRASES = [  # (segments, seconds on screen); segment = (text, fill, weight)
-    ([("Junior Agentic Coder ", "#ffffff", 800), (ROLE_TAG, "url(#role)", 800)], 9.0),
-    ([("agents.", "#58a6ff", 800)], 3.0),
-    ([("harnesses.", "#bc8cff", 800)], 3.0),
-    ([("inference.", "#3fb950", 800)], 3.0),
-]
-
-
-def hero_svg(s):
-    """Typing terminal line. Always dark, to sit under the banner."""
-    W, H, BG = 1280, 100, "#05070d"
-    font = "'JBM',ui-monospace,Menlo,Consolas,monospace"
-    size, cw = 22, 22 * 0.6
-    x0 = 48 + len("yash@agentic:~$ ") * cw
-    T = sum(sec for _, sec in PHRASES)
-    css, groups, t_at = [], [], 0.0
-    pct = lambda sec: 100 * sec / T
-    for i, (segs, sec) in enumerate(PHRASES):
-        chars = sum(len(t) for t, _, _ in segs)
-        L = chars * cw
-        type_t, del_t = min(0.055 * chars, 1.8), min(0.03 * chars, 0.7)
-        a, e = pct(t_at), pct(t_at + sec)
-        b = pct(t_at + type_t)
-        d = pct(t_at + sec - 0.15)
-        c = pct(t_at + sec - 0.15 - del_t)
-        t_at += sec
-        vis = (f"@keyframes v{i}{{0%,{e - 0.01:.3f}%{{opacity:1}}{e:.3f}%,100%{{opacity:0}}}}" if i == 0 else
-               f"@keyframes v{i}{{0%,{a - 0.01:.3f}%{{opacity:0}}{a:.3f}%,{e - 0.01:.3f}%{{opacity:1}}{e:.3f}%,100%{{opacity:0}}}}")
-        css.append(
-            vis +
-            f"@keyframes t{i}{{0%,{a:.3f}%{{transform:translateX(0);animation-timing-function:steps({chars},end)}}"
-            f"{b:.3f}%{{transform:translateX({L:.1f}px)}}"
-            f"{c:.3f}%{{transform:translateX({L:.1f}px);animation-timing-function:steps({chars},end)}}"
-            f"{d:.3f}%,100%{{transform:translateX(0)}}}}"
-            f".v{i}{{opacity:0;animation:v{i} {T}s linear infinite}}"
-            f".t{i}{{animation:t{i} {T}s linear infinite}}"
-        )
-        spans = "".join(f'<tspan fill="{f}" font-weight="{w}">{t}</tspan>' for t, f, w in segs)
-        groups.append(
-            f'<g class="v{i}"><text x="{x0:.1f}" y="58" font-size="{size}" xml:space="preserve">{spans}</text>'
-            f'<rect class="t{i}" x="{x0:.1f}" y="32" width="{L + 16:.1f}" height="34" fill="{BG}"/>'
-            f'<rect class="t{i}" x="{x0 + 1:.1f}" y="39" width="11" height="24" rx="1.5" fill="#58a6ff"/></g>'
-        )
-    role_x = x0 + len(PHRASES[0][0][0][0]) * cw
-
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Junior Agentic Coder {ROLE_TAG}">
-<style>
-  {font_face("JBM", "jbmono-500.woff2", 500)}
-  {font_face("JBM", "jbmono-800.woff2", 800)}
-  text {{ font-family: {font}; }}
-  {"".join(css)}
-</style>
-<defs>
-  <clipPath id="c"><rect width="{W}" height="{H}" rx="16"/></clipPath>
-  <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
-  <linearGradient id="role" x1="{role_x:.1f}" x2="{role_x + len(ROLE_TAG) * cw:.1f}" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient>
-  <radialGradient id="glow"><stop offset="0" stop-color="#8957e5" stop-opacity=".28"/><stop offset="1" stop-color="#8957e5" stop-opacity="0"/></radialGradient>
-</defs>
-<g clip-path="url(#c)">
-  <rect width="{W}" height="{H}" fill="{BG}"/>
-  <ellipse cx="{W - 120}" cy="{H + 50}" rx="420" ry="80" fill="url(#glow)"/>
-  <rect width="{W}" height="1.5" fill="url(#edge)"/>
-  <text x="48" y="58" font-size="{size}"><tspan fill="#3fb950">yash</tspan><tspan fill="#6e7681">@</tspan><tspan fill="#bc8cff">agentic</tspan><tspan fill="#6e7681">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#6e7681">$ </tspan></text>
-  {"".join(groups)}
-</g>
-<rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="16" fill="none" stroke="#21262d"/>
-</svg>'''
-
-
 GH_LOGO = ("M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61"
            "C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605"
            "-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405"
@@ -284,10 +214,6 @@ def badge_svg(label, message, color="#58a6ff", label_bg="#0d1117"):
 
 
 def main():
-    if sys.argv[1] == "--hero":  # static strip, committed to assets/ (no live data in it)
-        with open(sys.argv[2], "w") as f:
-            f.write(hero_svg(None))
-        return
     user, out = sys.argv[1], sys.argv[2]
     os.makedirs(out, exist_ok=True)
     days = mock_days() if os.environ.get("MOCK") else fetch_days(user)

@@ -1,7 +1,7 @@
 <!-- ───────────────────────── HEADER ───────────────────────── -->
 <img width="100%" src="./assets/banner.svg" alt="Yash Bahirat: agents, harnesses, inference" />
 
-<img width="100%" src="./assets/hero.svg" alt="Junior Agentic Coder @ Tradeify" />
+<img width="100%" src="./assets/hero.svg" alt="Junior Agentic Coder at Tradeify" />
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/contributions-badge.svg" alt="contributions" />
@@ -18,13 +18,13 @@
   </picture>
 </p>
 
-<img width="100%" src="./assets/boot.svg" alt="./boot --verbose: harness, tools, subagents, memory, evals all OK. The model is the engine. The harness is the car. I build cars." />
+<img width="100%" src="./assets/quote.svg" alt="The model is the engine. The harness is the car. I build cars." />
+
+<a href="https://github.com/yashbahirat?tab=repositories"><img width="100%" src="./assets/projects.svg" alt="Selected work: MPTL (Memory Provenance & Trust Ledger), Sovereign Agentic Workbench, RegulOS" /></a>
 
 <img width="100%" src="./assets/agent.svg" alt="agent.yaml: Junior Agentic Coder @ Tradeify; focus: harness, agent and inference engineering" />
 
-<a href="https://github.com/yashbahirat?tab=repositories"><img width="100%" src="./assets/procs.svg" alt="Projects: MPTL, RegulOS, Sovereign Agentic Workbench" /></a>
-
-<img width="100%" src="./assets/tools.svg" alt="Tools: Claude Code, MCP, LangGraph, vLLM, Ollama, Hugging Face, Python, PyTorch, TypeScript, FastAPI, Docker, Linux, Bash, Cloudflare, Postgres, Git" />
+<img width="100%" src="./assets/tools.svg" alt="Toolkit: Claude Code, MCP, LangGraph, vLLM, Ollama, Hugging Face, Python, PyTorch, TypeScript, FastAPI, Docker, Linux, Bash, Cloudflare, Postgres, Git" />
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/github-snake-dark.svg" />
