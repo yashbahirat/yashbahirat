@@ -8,11 +8,20 @@
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fyashbahirat%2Fyashbahirat%2Foutput%2Fcontributions.json&logo=github&logoColor=white" />
   <img src="https://img.shields.io/badge/status-shipping-2ea043?style=flat-square&labelColor=0d1117" />
   <img src="https://img.shields.io/badge/harness-claude--code-D97757?style=flat-square&labelColor=0d1117&logo=claude&logoColor=D97757" />
   <img src="https://img.shields.io/badge/papers-1-58a6ff?style=flat-square&labelColor=0d1117" />
   <img src="https://img.shields.io/badge/patents-1-a371f7?style=flat-square&labelColor=0d1117" />
   <img src="https://komarev.com/ghpvc/?username=yashbahirat&style=flat-square&color=8b949e&label=visitors" />
+</p>
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/contributions-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/contributions.svg" />
+    <img alt="lifetime GitHub contributions" src="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/contributions.svg" width="100%" />
+  </picture>
 </p>
 
 ---
@@ -64,10 +73,8 @@ agent:
 | PID | process | what it does | state |
 |:---:|:---|:---|:---:|
 | `001` | [**MPTL**](#) | Memory Provenance & Trust Ledger: auditable, tamper-evident memory for LLM agents | 🟢 running |
-| `002` | [**ESGIP**](#) | Grounded generation: reasoning-based PageIndex retrieval vs vector RAG | 🟡 writing paper |
-| `003` | [**AgentOps Drift**](#) | Measuring memory drift in long-running agents | 🟢 running |
-| `004` | [**RegulOS**](#) | Cross-jurisdictional AI-compliance conflict detection engine | ✅ exited 0 |
-| `005` | [**Sovereign Agentic Workbench**](#) | Air-gapped, on-prem agentic AI for industrial operations | 🟢 running |
+| `002` | [**RegulOS**](#) | Cross-jurisdictional AI-compliance conflict detection engine | ✅ exited 0 |
+| `003` | [**Sovereign Agentic Workbench**](#) | Air-gapped, on-prem agentic AI for industrial operations | 🟢 running |
 
 ### `> which tools`
 
@@ -96,7 +103,6 @@ agent:
 <p align="left">
   <a href="https://www.linkedin.com/in/YOUR_LINKEDIN"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
   <a href="mailto:ivanoodrag27@gmail.com"><img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white" /></a>
-  <a href="https://x.com/YOUR_X"><img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" /></a>
 </p>
 
 ```text
