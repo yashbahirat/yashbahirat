@@ -190,8 +190,8 @@ PHRASES = [  # (segments, seconds on screen); segment = (text, fill, weight)
 
 
 def hero_svg(s):
-    """Typing terminal line + live stat chips. Always dark, to sit under the banner."""
-    W, H, BG = 1280, 150, "#05070d"
+    """Typing terminal line. Always dark, to sit under the banner."""
+    W, H, BG = 1280, 100, "#05070d"
     font = "'JBM',ui-monospace,Menlo,Consolas,monospace"
     size, cw = 22, 22 * 0.6
     x0 = 48 + len("yash@agentic:~$ ") * cw
@@ -220,37 +220,17 @@ def hero_svg(s):
         )
         spans = "".join(f'<tspan fill="{f}" font-weight="{w}">{t}</tspan>' for t, f, w in segs)
         groups.append(
-            f'<g class="v{i}"><text x="{x0:.1f}" y="62" font-size="{size}" xml:space="preserve">{spans}</text>'
-            f'<rect class="t{i}" x="{x0:.1f}" y="36" width="{L + 16:.1f}" height="34" fill="{BG}"/>'
-            f'<rect class="t{i}" x="{x0 + 1:.1f}" y="43" width="11" height="24" rx="1.5" fill="#58a6ff"/></g>'
+            f'<g class="v{i}"><text x="{x0:.1f}" y="58" font-size="{size}" xml:space="preserve">{spans}</text>'
+            f'<rect class="t{i}" x="{x0:.1f}" y="32" width="{L + 16:.1f}" height="34" fill="{BG}"/>'
+            f'<rect class="t{i}" x="{x0 + 1:.1f}" y="39" width="11" height="24" rx="1.5" fill="#58a6ff"/></g>'
         )
     role_x = x0 + len(PHRASES[0][0][0][0]) * cw
-
-    chips_data = [
-        (f"{s['total']:,}", "contributions", "#58a6ff"),
-        (f"{s['current']}d", "streak", "#3fb950"),
-        ("claude-code", "harness", "#d97757"),
-        ("1 paper", "1 patent", "#bc8cff"),
-    ]
-    chips, x = [], 48
-    for i, (val, label, col) in enumerate(chips_data):
-        w = 34 + 8.4 * len(val) + 7.8 * len(label) + 8
-        chips.append(
-            f'<g class="chip" style="animation-delay:{0.15 + i * 0.1:.2f}s">'
-            f'<rect x="{x}" y="96" width="{w:.1f}" height="32" rx="16" fill="#0d1117" stroke="#21262d"/>'
-            f'<circle cx="{x + 17}" cy="112" r="4" fill="{col}"/>'
-            f'<text x="{x + 29}" y="117" font-size="14" font-weight="800" fill="#e6edf3">{val}'
-            f'<tspan font-weight="500" font-size="13" fill="#8b949e" dx="8">{label}</tspan></text></g>'
-        )
-        x += w + 10
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Junior Agentic Coder {ROLE_TAG}">
 <style>
   {font_face("JBM", "jbmono-500.woff2", 500)}
   {font_face("JBM", "jbmono-800.woff2", 800)}
   text {{ font-family: {font}; }}
-  .chip {{ animation: chip .6s cubic-bezier(.2,.8,.2,1) both; }}
-  @keyframes chip {{ from {{ opacity: 0; transform: translateY(8px); }} to {{ opacity: 1; transform: none; }} }}
   {"".join(css)}
 </style>
 <defs>
@@ -261,12 +241,10 @@ def hero_svg(s):
 </defs>
 <g clip-path="url(#c)">
   <rect width="{W}" height="{H}" fill="{BG}"/>
-  <ellipse cx="{W - 120}" cy="{H + 30}" rx="380" ry="100" fill="url(#glow)"/>
+  <ellipse cx="{W - 120}" cy="{H + 50}" rx="420" ry="80" fill="url(#glow)"/>
   <rect width="{W}" height="1.5" fill="url(#edge)"/>
-  <text x="48" y="62" font-size="{size}"><tspan fill="#3fb950">yash</tspan><tspan fill="#6e7681">@</tspan><tspan fill="#bc8cff">agentic</tspan><tspan fill="#6e7681">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#6e7681">$ </tspan></text>
+  <text x="48" y="58" font-size="{size}"><tspan fill="#3fb950">yash</tspan><tspan fill="#6e7681">@</tspan><tspan fill="#bc8cff">agentic</tspan><tspan fill="#6e7681">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#6e7681">$ </tspan></text>
   {"".join(groups)}
-  <line x1="48" y1="82" x2="{W - 48}" y2="82" stroke="#21262d" stroke-dasharray="2 5"/>
-  {"".join(chips)}
 </g>
 <rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="16" fill="none" stroke="#21262d"/>
 </svg>'''
