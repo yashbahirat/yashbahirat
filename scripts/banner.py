@@ -133,7 +133,7 @@ def banner():
 
 def footer():
     w, h = 1280, 96
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="end of transmission">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="open to: agent infra, eval tooling, research collabs, hard problems">
 <style>
   {font_face("JBM", "jbmono-500.woff2", 500)}
   .blink {{ animation: blink 1.05s steps(1) infinite; }}
@@ -151,7 +151,7 @@ def footer():
   <ellipse cx="{w / 2}" cy="{h}" rx="520" ry="90" fill="url(#g)"/>
   <rect y="0" width="{w}" height="1.5" fill="url(#l)"/>
   <rect class="scan" y="0" width="400" height="1.5" fill="#e6edf3" opacity=".6"/>
-  <text x="{w / 2}" y="{h / 2 + 5}" text-anchor="middle" font-family="{MONO}" font-size="14" fill="#6e7681">// end of transmission <tspan fill="#58a6ff">·</tspan> agent idle, awaiting next task<tspan class="blink" fill="#e6edf3"> ▋</tspan></text>
+  <text x="{w / 2}" y="{h / 2 + 7}" text-anchor="middle" font-family="{MONO}" font-size="21" fill="#6e7681"><tspan fill="#3fb950">$</tspan> open to: <tspan fill="#e6edf3">agent infra</tspan> · <tspan fill="#e6edf3">eval tooling</tspan> · <tspan fill="#e6edf3">research collabs</tspan> · <tspan fill="#e6edf3">hard problems</tspan><tspan class="blink" fill="#e6edf3"> ▋</tspan></text>
 </g>
 <rect x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="14" fill="none" stroke="#21262d"/>
 </svg>'''
