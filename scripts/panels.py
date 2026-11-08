@@ -187,7 +187,7 @@ def section_label(x, y, text, count=None):
 
 # ───────────────────────────── hero line under the banner ─────────────────────────────
 def hero():
-    Wh, H, BG = 1280, 140, "#05070d"
+    Wh, H, BG = 1280, 130, "#05070d"
     words = [("agents.", C["blue"]), ("harnesses.", C["purple"]), ("inference.", C["green"])]
     slot = 2.6
     T = slot * len(words)
@@ -198,16 +198,16 @@ def hero():
         b = 100 * (i * slot + 0.45) / T
         c = 100 * ((i + 1) * slot - 0.45) / T
         e = 100 * (i + 1) * slot / T
-        pre = f"0%,{a - 0.01:.2f}%{{opacity:0;transform:translateY(40px)}}" if i else ""
+        pre = f"0%,{a - 0.01:.2f}%{{opacity:0;transform:translateY(32px)}}" if i else ""
         css.append(
-            f"@keyframes w{i}{{{pre}{a:.2f}%{{opacity:0;transform:translateY(40px)}}"
+            f"@keyframes w{i}{{{pre}{a:.2f}%{{opacity:0;transform:translateY(32px)}}"
             f"{b:.2f}%,{c:.2f}%{{opacity:1;transform:none}}"
-            f"{e:.2f}%,100%{{opacity:0;transform:translateY(-40px)}}}}"
+            f"{e:.2f}%,100%{{opacity:0;transform:translateY(-32px)}}}}"
             f".w{i}{{animation:w{i} {T}s cubic-bezier(.6,0,.2,1) infinite}}")
-        groups.append(f'<text class="sans w{i}" x="1232" y="102" text-anchor="end" font-size="46" font-weight="700" fill="{col}">{wd}</text>')
+        groups.append(f'<text class="sans w{i}" x="1232" y="98" text-anchor="end" font-size="34" font-weight="700" fill="{col}">{wd}</text>')
     body = f'''<defs>
   <clipPath id="frame"><rect width="{Wh}" height="{H}" rx="16"/></clipPath>
-  <clipPath id="slot"><rect x="880" y="56" width="360" height="62"/></clipPath>
+  <clipPath id="slot"><rect x="900" y="62" width="340" height="50"/></clipPath>
   <linearGradient id="trd" x1="0" x2="1"><stop offset="0" stop-color="{C["blue"]}"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient>
   <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
 </defs>
@@ -215,7 +215,7 @@ def hero():
   <rect width="{Wh}" height="{H}" fill="{BG}"/>
   <rect width="{Wh}" height="1.5" fill="url(#edge)"/>
   <text class="mono" x="50" y="46" font-size="15" letter-spacing="3" fill="{C["muted"]}">CURRENTLY</text>
-  <text class="sans rise" x="46" y="102" font-size="46" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="{C["muted"]}">at</tspan> <tspan fill="url(#trd)">Tradeify</tspan></text>
+  <text class="sans rise" x="48" y="98" font-size="34" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="{C["muted"]}">at</tspan> <tspan fill="url(#trd)">Tradeify</tspan></text>
   <text class="mono" x="1232" y="46" text-anchor="end" font-size="15" letter-spacing="3" fill="{C["muted"]}">BUILDING</text>
   <g clip-path="url(#slot)">{"".join(groups)}</g>
 </g>
@@ -314,11 +314,20 @@ def projects():
 def tools():
     icons = json.loads((ASSETS / "icons.json").read_text())
     groups = [
-        ("agent stack", [("claude", "Claude Code"), ("modelcontextprotocol", "MCP"), ("langchain", "LangGraph"),
-                         ("vllm", "vLLM"), ("ollama", "Ollama"), ("huggingface", "Hugging Face")]),
-        ("core", [("python", "Python"), ("pytorch", "PyTorch"), ("typescript", "TypeScript"), ("fastapi", "FastAPI"),
-                  ("docker", "Docker"), ("linux", "Linux"), ("gnubash", "Bash"), ("cloudflare", "Cloudflare"),
-                  ("postgresql", "Postgres"), ("git", "Git")]),
+        ("agents & LLMs", [("claude", "Claude Code"), ("anthropic", "Anthropic API"), ("@OAI:000000", "OpenAI"),
+                           ("modelcontextprotocol", "MCP"), ("langchain", "LangChain"), ("langgraph", "LangGraph"),
+                           ("@LS:1C3C3C", "LangSmith"), ("@LF:E11312", "Langfuse"), ("pydantic", "Pydantic"),
+                           ("huggingface", "Hugging Face")]),
+        ("inference", [("vllm", "vLLM"), ("ollama", "Ollama"), ("onnx", "ONNX"), ("nvidia", "NVIDIA"), ("@CUDA:76B900", "CUDA")]),
+        ("ML & data science", [("python", "Python"), ("pytorch", "PyTorch"), ("numpy", "NumPy"), ("pandas", "pandas"),
+                               ("scikitlearn", "scikit-learn"), ("opencv", "OpenCV"), ("jupyter", "Jupyter"),
+                               ("streamlit", "Streamlit")]),
+        ("web & data", [("typescript", "TypeScript"), ("nodedotjs", "Node.js"), ("react", "React"), ("nextdotjs", "Next.js"),
+                        ("tailwindcss", "Tailwind"), ("fastapi", "FastAPI"), ("postgresql", "Postgres"), ("mongodb", "MongoDB"),
+                        ("supabase", "Supabase")]),
+        ("infra", [("docker", "Docker"), ("linux", "Linux"), ("gnubash", "Bash"), ("git", "Git"),
+                   ("githubactions", "GitHub Actions"), ("@AWS:FF9900", "AWS"), ("googlecloud", "Google Cloud"),
+                   ("cloudflare", "Cloudflare"), ("vercel", "Vercel")]),
     ]
     css = (".pop { animation: pop .55s cubic-bezier(.2,.9,.3,1.4) both; transform-box: fill-box; transform-origin: center; }"
            "@keyframes pop { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }")
@@ -328,10 +337,14 @@ def tools():
     out.append(f'<rect x=".5" y="{y + .5}" width="{W - 1}" height="{{H}}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>')
     y += 34
     for gname, items in groups:
-        out.append(f'<text class="sans" x="28" y="{y}" font-size="13" font-weight="500" fill="{C["muted"]}">{gname.capitalize()}</text>')
+        out.append(f'<text class="sans" x="28" y="{y}" font-size="13" font-weight="500" fill="{C["muted"]}">{gname[0].upper() + gname[1:]}</text>')
         ty = y + 14
         for j, (slug, label) in enumerate(items):
-            ic = icons[slug]
+            if slug.startswith("@"):
+                mono, hexv = slug[1:].split(":")
+                ic = {"hex": hexv, "path": None, "mono": mono}
+            else:
+                ic = icons[slug]
             hx = "#" + ic["hex"]
             r, g, b = (int(ic["hex"][k:k + 2], 16) for k in (0, 2, 4))
             fill = C["text"] if (0.299 * r + 0.587 * g + 0.114 * b) < 70 else hx
@@ -341,8 +354,9 @@ def tools():
                 f'<g class="pop" style="animation-delay:{0.2 + n * 0.05:.2f}s">'
                 f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="12" fill="{C["bar"]}" stroke="{C["border"]}"/>'
                 f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="12" fill="url(#g{n})"/>'
-                f'<path transform="translate({tx + 18:.1f} {ty + 18}) scale(1.25)" fill="{fill}" d="{ic["path"]}"/>'
-                f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + tile + 18}" text-anchor="middle" font-size="12" fill="{C["muted"]}">{label}</text></g>'
+                + (f'<path transform="translate({tx + 18:.1f} {ty + 18}) scale(1.25)" fill="{fill}" d="{ic["path"]}"/>' if ic["path"] else
+                   f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + 42}" text-anchor="middle" font-size="{22 if len(ic['mono']) <= 3 else 17}" font-weight="700" fill="{fill}">{ic["mono"]}</text>') +
+                f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + tile + 18}" text-anchor="middle" font-size="{12 if len(label) <= 11 else 10.5}" fill="{C["muted"]}">{label}</text></g>'
             )
             n += 1
         y = ty + tile + 52
