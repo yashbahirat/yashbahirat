@@ -2,7 +2,7 @@
 <img width="100%" src="https://capsule-render.vercel.app/api?type=venom&color=0:0d1117,55:161b22,100:1f6feb&height=230&section=header&text=YASH%20BAHIRAT&fontSize=64&fontColor=e6edf3&fontAlignY=38&animation=twinkling&desc=agents%20%C2%B7%20harnesses%20%C2%B7%20inference&descSize=18&descAlignY=60&descAlign=50" />
 
 <p align="center">
-  <a href="https://github.com/YOUR_GH_USERNAME">
+  <a href="https://github.com/yashbahirat">
     <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=2800&pause=900&color=58A6FF&center=true&vCenter=true&width=640&lines=Junior+Agentic+Coder+%40+Tradeify;Harness+engineering+%3E+prompt+engineering;Building+agents+that+remember+what+they+did+and+why;Research.+Build.+Eval.+Repeat." alt="typing" />
   </a>
 </p>
@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/harness-claude--code-D97757?style=flat-square&labelColor=0d1117&logo=claude&logoColor=D97757" />
   <img src="https://img.shields.io/badge/papers-1-58a6ff?style=flat-square&labelColor=0d1117" />
   <img src="https://img.shields.io/badge/patents-1-a371f7?style=flat-square&labelColor=0d1117" />
-  <img src="https://komarev.com/ghpvc/?username=YOUR_GH_USERNAME&style=flat-square&color=8b949e&label=visitors" />
+  <img src="https://komarev.com/ghpvc/?username=yashbahirat&style=flat-square&color=8b949e&label=visitors" />
 </p>
 
 ---
@@ -86,9 +86,9 @@ agent:
 ### `> git log --graph`
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/YOUR_GH_USERNAME/YOUR_GH_USERNAME/output/github-snake-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/YOUR_GH_USERNAME/YOUR_GH_USERNAME/output/github-snake.svg" />
-  <img alt="contribution snake" src="https://raw.githubusercontent.com/YOUR_GH_USERNAME/YOUR_GH_USERNAME/output/github-snake.svg" />
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/github-snake-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/github-snake.svg" />
+  <img alt="contribution snake" src="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/github-snake.svg" />
 </picture>
 
 ### `> ping yash`
