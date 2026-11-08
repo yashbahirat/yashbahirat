@@ -180,11 +180,12 @@ def svg(s, user, t):
 </svg>'''
 
 
-PHRASES = [
-    "harness engineering > prompt engineering",
-    "building agents that remember what they did, and why",
-    "junior agentic coder @ tradeify",
-    "research. build. eval. repeat.",
+ROLE_TAG = "@ Tradeify"
+PHRASES = [  # (segments, seconds on screen); segment = (text, fill, weight)
+    ([("Junior Agentic Coder ", "#ffffff", 800), (ROLE_TAG, "url(#role)", 800)], 9.0),
+    ([("agents.", "#58a6ff", 800)], 3.0),
+    ([("harnesses.", "#bc8cff", 800)], 3.0),
+    ([("inference.", "#3fb950", 800)], 3.0),
 ]
 
 
@@ -194,26 +195,36 @@ def hero_svg(s):
     font = "'JBM',ui-monospace,Menlo,Consolas,monospace"
     size, cw = 22, 22 * 0.6
     x0 = 48 + len("yash@agentic:~$ ") * cw
-    n, T = len(PHRASES), 5.0 * len(PHRASES)
-    css, groups = [], []
-    for i, ph in enumerate(PHRASES):
-        L = len(ph) * cw
-        a, b, c, d, e = [100 * (i + f) / n for f in (0, 0.42, 0.80, 0.94, 1)]
+    T = sum(sec for _, sec in PHRASES)
+    css, groups, t_at = [], [], 0.0
+    pct = lambda sec: 100 * sec / T
+    for i, (segs, sec) in enumerate(PHRASES):
+        chars = sum(len(t) for t, _, _ in segs)
+        L = chars * cw
+        type_t, del_t = min(0.055 * chars, 1.8), min(0.03 * chars, 0.7)
+        a, e = pct(t_at), pct(t_at + sec)
+        b = pct(t_at + type_t)
+        d = pct(t_at + sec - 0.15)
+        c = pct(t_at + sec - 0.15 - del_t)
+        t_at += sec
+        vis = (f"@keyframes v{i}{{0%,{e - 0.01:.3f}%{{opacity:1}}{e:.3f}%,100%{{opacity:0}}}}" if i == 0 else
+               f"@keyframes v{i}{{0%,{a - 0.01:.3f}%{{opacity:0}}{a:.3f}%,{e - 0.01:.3f}%{{opacity:1}}{e:.3f}%,100%{{opacity:0}}}}")
         css.append(
-            (f"@keyframes v{i}{{0%,{e - 0.01:.3f}%{{opacity:1}}{e:.3f}%,100%{{opacity:0}}}}" if i == 0 else
-             f"@keyframes v{i}{{0%,{a - 0.01:.3f}%{{opacity:0}}{a:.3f}%,{e - 0.01:.3f}%{{opacity:1}}{e:.3f}%,100%{{opacity:0}}}}") +
-            f"@keyframes t{i}{{0%,{a:.3f}%{{transform:translateX(0);animation-timing-function:steps({len(ph)},end)}}"
+            vis +
+            f"@keyframes t{i}{{0%,{a:.3f}%{{transform:translateX(0);animation-timing-function:steps({chars},end)}}"
             f"{b:.3f}%{{transform:translateX({L:.1f}px)}}"
-            f"{c:.3f}%{{transform:translateX({L:.1f}px);animation-timing-function:steps({len(ph)},end)}}"
+            f"{c:.3f}%{{transform:translateX({L:.1f}px);animation-timing-function:steps({chars},end)}}"
             f"{d:.3f}%,100%{{transform:translateX(0)}}}}"
             f".v{i}{{opacity:0;animation:v{i} {T}s linear infinite}}"
             f".t{i}{{animation:t{i} {T}s linear infinite}}"
         )
+        spans = "".join(f'<tspan fill="{f}" font-weight="{w}">{t}</tspan>' for t, f, w in segs)
         groups.append(
-            f'<g class="v{i}"><text x="{x0:.1f}" y="62" font-size="{size}" fill="#e6edf3">{ph}</text>'
+            f'<g class="v{i}"><text x="{x0:.1f}" y="62" font-size="{size}" xml:space="preserve">{spans}</text>'
             f'<rect class="t{i}" x="{x0:.1f}" y="36" width="{L + 16:.1f}" height="34" fill="{BG}"/>'
             f'<rect class="t{i}" x="{x0 + 1:.1f}" y="43" width="11" height="24" rx="1.5" fill="#58a6ff"/></g>'
         )
+    role_x = x0 + len(PHRASES[0][0][0][0]) * cw
 
     chips_data = [
         (f"{s['total']:,}", "contributions", "#58a6ff"),
@@ -233,7 +244,7 @@ def hero_svg(s):
         )
         x += w + 10
 
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{' / '.join(PHRASES)}">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Junior Agentic Coder {ROLE_TAG}">
 <style>
   {font_face("JBM", "jbmono-500.woff2", 500)}
   {font_face("JBM", "jbmono-800.woff2", 800)}
@@ -245,6 +256,7 @@ def hero_svg(s):
 <defs>
   <clipPath id="c"><rect width="{W}" height="{H}" rx="16"/></clipPath>
   <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
+  <linearGradient id="role" x1="{role_x:.1f}" x2="{role_x + len(ROLE_TAG) * cw:.1f}" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient>
   <radialGradient id="glow"><stop offset="0" stop-color="#8957e5" stop-opacity=".28"/><stop offset="1" stop-color="#8957e5" stop-opacity="0"/></radialGradient>
 </defs>
 <g clip-path="url(#c)">
