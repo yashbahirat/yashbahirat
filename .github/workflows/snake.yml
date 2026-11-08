@@ -27,7 +27,9 @@ jobs:
       - name: Build contributions card
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 scripts/contrib_card.py "${{ github.repository_owner }}" dist
+        run: |
+          python3 scripts/contrib_card.py "${{ github.repository_owner }}" /tmp/cards
+          sudo cp /tmp/cards/* dist/
 
       - uses: crazy-max/ghaction-github-pages@v4
         with:
