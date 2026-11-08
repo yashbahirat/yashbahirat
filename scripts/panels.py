@@ -370,7 +370,7 @@ def tools():
 
 
 if __name__ == "__main__":
-    for name, fn in (("hero", hero), ("quote", quote), ("agent", agent), ("projects", projects), ("tools", tools)):
+    for name, fn in (("hero", hero), ("quote", quote), ("agent", agent), ("projects", projects), ("toolkit", tools)):
         svg = fn()
         xml.dom.minidom.parseString(svg)  # GitHub serves these as standalone images: must be valid XML
         (ASSETS / f"{name}.svg").write_text(svg)

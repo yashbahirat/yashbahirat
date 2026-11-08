@@ -24,7 +24,7 @@
 
 <img width="100%" src="./assets/agent.svg" alt="agent.yaml: Junior Agentic Coder @ Tradeify; focus: harness, agent and inference engineering" />
 
-<img width="100%" src="./assets/tools.svg" alt="Toolkit: Claude Code, Anthropic API, OpenAI, MCP, LangChain, LangGraph, LangSmith, Langfuse, Pydantic, Hugging Face, vLLM, Ollama, ONNX, CUDA, Python, PyTorch, NumPy, pandas, scikit-learn, OpenCV, Jupyter, Streamlit, TypeScript, Node.js, React, Next.js, Tailwind, FastAPI, Postgres, MongoDB, Supabase, Docker, Linux, Bash, Git, GitHub Actions, AWS, Google Cloud, Cloudflare, Vercel" />
+<img width="100%" src="./assets/toolkit.svg" alt="Toolkit: Claude Code, Anthropic API, OpenAI, MCP, LangChain, LangGraph, LangSmith, Langfuse, Pydantic, Hugging Face, vLLM, Ollama, ONNX, CUDA, Python, PyTorch, NumPy, pandas, scikit-learn, OpenCV, Jupyter, Streamlit, TypeScript, Node.js, React, Next.js, Tailwind, FastAPI, Postgres, MongoDB, Supabase, Docker, Linux, Bash, Git, GitHub Actions, AWS, Google Cloud, Cloudflare, Vercel" />
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/github-snake-dark.svg" />
