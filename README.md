@@ -1,5 +1,5 @@
 <!-- ───────────────────────── HEADER ───────────────────────── -->
-<img width="100%" src="https://capsule-render.vercel.app/api?type=venom&color=0:0d1117,55:161b22,100:1f6feb&height=230&section=header&text=YASH%20BAHIRAT&fontSize=64&fontColor=e6edf3&fontAlignY=38&animation=twinkling&desc=agents%20%C2%B7%20harnesses%20%C2%B7%20inference&descSize=18&descAlignY=60&descAlign=50" />
+<img width="100%" src="./assets/banner.svg" alt="Yash Bahirat: agents, harnesses, inference" />
 
 <p align="center">
   <a href="https://github.com/yashbahirat">
@@ -109,4 +109,4 @@ agent:
 open to: agent infra · eval tooling · research collabs · hard problems
 ```
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=venom&color=0:1f6feb,45:161b22,100:0d1117&height=120&section=footer" />
+<img width="100%" src="./assets/footer.svg" alt="end of transmission" />
