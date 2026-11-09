@@ -63,17 +63,10 @@ AGENT_YAML = '''agent:
     - agent_engineering       # planning, memory, subagents, long-horizon reliability
     - inference_engineering   # latency, cost, throughput, serving
 
-  beliefs:
-    - "if it isn't evaluated, it doesn't work"
-    - "an agent that can't explain its memory can't be trusted"
-    - "context is a budget, spend it like money"
-
   research:
     published: "Harmony-Bot — IJAECS, Vol. 12, Iss. 7 (2025)"
     patents: 1
-    in_progress: 1
-
-  hallucination_tolerance: 0'''
+    in_progress: 1'''
 
 
 def yaml_tokens(line):
@@ -128,10 +121,8 @@ def agent():
     out.append(
         f'<rect x=".5" y="{sb}" width="{W - 1}" height="23.5" fill="{C["bar"]}"/>'
         f'<path d="M.5 {sb}h{W - 1}" stroke="{C["border"]}"/>'
-        f'<rect x="1" y="{sb + 0.5}" width="70" height="23" fill="{C["blue"]}" fill-opacity=".85"/>'
-        f'<text x="36" y="{sb + 16}" text-anchor="middle" font-size="11" font-weight="800" fill="#0d1117">NORMAL</text>'
-        f'<text x="84" y="{sb + 16}" font-size="11" fill="{C["muted"]}">agent.yaml</text>'
-        f'<text x="{W - 16}" y="{sb + 16}" text-anchor="end" font-size="11" fill="{C["muted"]}">yaml · utf-8 · ln {len(lines)}, col 1 · <tspan fill="{C["green"]}">● 0 hallucinations</tspan></text>'
+        f'<text x="16" y="{sb + 16}" font-size="11" fill="{C["muted"]}">agent.yaml</text>'
+        f'<text x="{W - 16}" y="{sb + 16}" text-anchor="end" font-size="11" fill="{C["muted"]}">yaml · utf-8 · ln {len(lines)}, col 1</text>'
     )
     return window(h, "~/yash/agent.yaml", "\n".join(out))
 
@@ -238,7 +229,7 @@ def quote():
 
 
 # ───────────────────────────── selected work ─────────────────────────────
-STATUS = {"in progress": C["orange"], "shipped": C["green"], "hackathon": C["blue"]}
+STATUS = {"in progress": C["orange"], "built": C["green"], "hackathon": C["blue"]}
 
 
 def project_card(x, y, w, h, idx, title, status, desc, tags, desc_w, delay_s, extra=""):
@@ -302,7 +293,7 @@ def projects():
         "execution and P&ID vision. Team build for Smart India Hackathon.",
         ["local LLMs", "RAG", "sandboxing"], half - 48, 0.25))
     body.append(project_card(
-        half + gap, y2, half, hh, "03", "RegulOS", "shipped",
+        half + gap, y2, half, hh, "03", "RegulOS", "built",
         "Detects where GDPR, the EU AI Act and India's DPDP Act conflict for the same AI system, "
         "before it ships.",
         ["compliance", "GDPR", "EU AI Act", "DPDP"], half - 48, 0.4))

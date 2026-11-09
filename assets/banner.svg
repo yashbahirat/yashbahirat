@@ -33,7 +33,6 @@
   <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#bc8cff"/></linearGradient>
   <linearGradient id="topline" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
   <filter id="glow" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="14"/></filter>
-  <path id="ring" d="M 1010 40 A 150 150 0 1 1 1009.99 40 Z"/>
   <path id="loop" d="M 1010 90 A 100 100 0 1 1 1009.99 90 Z"/>
 </defs>
 
@@ -47,9 +46,6 @@
   <rect x="0" y="378.5" width="1280" height="1.5" fill="url(#topline)"/>
 
   <!-- left: identity -->
-  <g class="rise" style="animation-delay:.05s">
-    <text x="82" y="86" font-family="'JBM',ui-monospace,Menlo,Consolas,monospace" font-size="15" fill="#8b949e"><tspan fill="#3fb950">●</tspan>  ~/yash <tspan fill="#3fb950">$</tspan> ./boot --agentic<tspan class="blink" fill="#e6edf3"> ▋</tspan></text>
-  </g>
   <g class="rise" style="animation-delay:.18s">
     <text x="78" y="190" font-family="'Unb','Arial Black',sans-serif" font-weight="800" font-size="92" fill="#58a6ff" opacity=".35" filter="url(#glow)">YASH</text>
     <text x="78" y="190" font-family="'Unb','Arial Black',sans-serif" font-weight="800" font-size="92" fill="url(#name)">YASH</text>
@@ -63,10 +59,6 @@
   </g>
 
   <!-- right: the harness around the model -->
-  <g class="spin" opacity=".9">
-    <circle cx="1010" cy="190" r="150" fill="none" stroke="#21262d" stroke-width="1"/>
-    <text font-family="'JBM',ui-monospace,Menlo,Consolas,monospace" font-size="10.5" letter-spacing="2.2" fill="#6e7681"><textPath href="#ring">HARNESS · TOOLS · MEMORY · EVALS · CONTEXT · RETRIES · HARNESS · TOOLS · MEMORY · EVALS · CONTEXT · RETRIES · </textPath></text>
-  </g>
   <circle cx="1010" cy="190" r="100" class="flow"/>
   <line x1="1010" y1="190" x2="1010.0" y2="106.0" class="spoke"/><line x1="1010" y1="190" x2="1094.0" y2="190.0" class="spoke"/><line x1="1010" y1="190" x2="1010.0" y2="274.0" class="spoke"/><line x1="1010" y1="190" x2="926.0" y2="190.0" class="spoke"/>
   <circle r="4.5" fill="#e6edf3"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#loop"/></animateMotion></circle>

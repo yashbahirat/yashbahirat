@@ -37,8 +37,6 @@ def node(label, angle_deg, delay):
 
 def banner():
     loop = (f"M {CX} {CY - R} A {R} {R} 0 1 1 {CX - 0.01} {CY - R} Z")
-    ring = (f"M {CX} {CY - RING} A {RING} {RING} 0 1 1 {CX - 0.01} {CY - RING} Z")
-    ring_text = "HARNESS · TOOLS · MEMORY · EVALS · CONTEXT · RETRIES · " * 2
     spokes = "".join(
         f'<line x1="{CX}" y1="{CY}" x2="{CX + (R - 16) * math.cos(math.radians(a)):.1f}" '
         f'y2="{CY + (R - 16) * math.sin(math.radians(a)):.1f}" class="spoke"/>'
@@ -82,7 +80,6 @@ def banner():
   <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#bc8cff"/></linearGradient>
   <linearGradient id="topline" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
   <filter id="glow" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="14"/></filter>
-  <path id="ring" d="{ring}"/>
   <path id="loop" d="{loop}"/>
 </defs>
 
@@ -96,9 +93,6 @@ def banner():
   <rect x="0" y="{H - 1.5}" width="{W}" height="1.5" fill="url(#topline)"/>
 
   <!-- left: identity -->
-  <g class="rise" style="animation-delay:.05s">
-    <text x="82" y="86" font-family="{MONO}" font-size="15" fill="#8b949e"><tspan fill="#3fb950">●</tspan>  ~/yash <tspan fill="#3fb950">$</tspan> ./boot --agentic<tspan class="blink" fill="#e6edf3"> ▋</tspan></text>
-  </g>
   <g class="rise" style="animation-delay:.18s">
     <text x="78" y="190" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="#58a6ff" opacity=".35" filter="url(#glow)">YASH</text>
     <text x="78" y="190" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="url(#name)">YASH</text>
@@ -112,10 +106,6 @@ def banner():
   </g>
 
   <!-- right: the harness around the model -->
-  <g class="spin" opacity=".9">
-    <circle cx="{CX}" cy="{CY}" r="{RING}" fill="none" stroke="#21262d" stroke-width="1"/>
-    <text font-family="{MONO}" font-size="10.5" letter-spacing="2.2" fill="#6e7681"><textPath href="#ring">{ring_text}</textPath></text>
-  </g>
   <circle cx="{CX}" cy="{CY}" r="{R}" class="flow"/>
   {spokes}
   <circle r="4.5" fill="#e6edf3"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#loop"/></animateMotion></circle>
@@ -133,7 +123,7 @@ def banner():
 
 def footer():
     w, h = 1280, 96
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="open to: agent infra, eval tooling, research collabs, hard problems">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="open to: agent infra, eval tooling, research collabs">
 <style>
   {font_face("JBM", "jbmono-500.woff2", 500)}
   .blink {{ animation: blink 1.05s steps(1) infinite; }}
@@ -151,7 +141,7 @@ def footer():
   <ellipse cx="{w / 2}" cy="{h}" rx="520" ry="90" fill="url(#g)"/>
   <rect y="0" width="{w}" height="1.5" fill="url(#l)"/>
   <rect class="scan" y="0" width="400" height="1.5" fill="#e6edf3" opacity=".6"/>
-  <text x="{w / 2}" y="{h / 2 + 7}" text-anchor="middle" font-family="{MONO}" font-size="21" fill="#6e7681"><tspan fill="#3fb950">$</tspan> open to: <tspan fill="#e6edf3">agent infra</tspan> · <tspan fill="#e6edf3">eval tooling</tspan> · <tspan fill="#e6edf3">research collabs</tspan> · <tspan fill="#e6edf3">hard problems</tspan><tspan class="blink" fill="#e6edf3"> ▋</tspan></text>
+  <text x="{w / 2}" y="{h / 2 + 7}" text-anchor="middle" font-family="{MONO}" font-size="21" fill="#6e7681"><tspan fill="#3fb950">$</tspan> open to: <tspan fill="#e6edf3">agent infra</tspan> · <tspan fill="#e6edf3">eval tooling</tspan> · <tspan fill="#e6edf3">research collabs</tspan><tspan class="blink" fill="#e6edf3"> ▋</tspan></text>
 </g>
 <rect x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="14" fill="none" stroke="#21262d"/>
 </svg>'''

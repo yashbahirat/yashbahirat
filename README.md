@@ -18,9 +18,9 @@
   </picture>
 </p>
 
-<a href="https://github.com/yashbahirat?tab=repositories"><img width="100%" src="./assets/projects.b8826fb2.svg" alt="Selected work: MPTL (Memory Provenance & Trust Ledger), Sovereign Agentic Workbench, RegulOS" /></a>
+<a href="https://github.com/yashbahirat?tab=repositories"><img width="100%" src="./assets/projects.342d3654.svg" alt="Selected work: MPTL (Memory Provenance & Trust Ledger), Sovereign Agentic Workbench, RegulOS" /></a>
 
-<img width="100%" src="./assets/agent.144a601c.svg" alt="agent.yaml: Junior Agentic Coder @ Tradeify; focus: harness, agent and inference engineering" />
+<img width="100%" src="./assets/agent.3e648468.svg" alt="agent.yaml: Junior Agentic Coder @ Tradeify; focus: harness, agent and inference engineering" />
 
 <img width="100%" src="./assets/toolkit.0dcd2883.svg" alt="Toolkit: Claude Code, Anthropic API, OpenAI, MCP, LangChain, LangGraph, LangSmith, Langfuse, Pydantic, Hugging Face, vLLM, Ollama, ONNX, CUDA, Python, PyTorch, NumPy, pandas, scikit-learn, OpenCV, Jupyter, Streamlit, TypeScript, Node.js, React, Next.js, Tailwind, FastAPI, Postgres, MongoDB, Supabase, Docker, Linux, Bash, Git, GitHub Actions, AWS, Google Cloud, Cloudflare, Vercel" />
 
@@ -35,4 +35,4 @@
   <a href="mailto:ivanoodrag27@gmail.com"><img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white" /></a>
 </p>
 
-<img width="100%" src="./assets/footer.svg" alt="open to: agent infra, eval tooling, research collabs, hard problems" />
+<img width="100%" src="./assets/footer.svg" alt="open to: agent infra, eval tooling, research collabs" />
