@@ -1,7 +1,5 @@
 <!-- ───────────────────────── HEADER ───────────────────────── -->
-<img width="100%" src="./assets/banner.svg" alt="Yash Bahirat" />
-
-<img width="100%" src="./assets/hero.7b1c6a8d.svg" alt="Junior Agentic Coder at Tradeify" />
+<img width="100%" src="./assets/banner.svg" alt="Yash Bahirat, Junior Agentic Coder at Tradeify" />
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/yashbahirat/yashbahirat/output/contributions-badge.svg" alt="contributions" />

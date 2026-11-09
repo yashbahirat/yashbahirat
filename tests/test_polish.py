@@ -20,10 +20,16 @@ def test_banner_has_no_subtitle_line():
         assert ">YASH<" in svg and ">BAHIRAT<" in svg
 
 
-def test_banner_name_is_vertically_centred():
+def test_banner_carries_the_role_and_is_centred():
+    for svg in (banner.banner(), (ROOT / "assets" / "banner.svg").read_text()):
+        text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", svg.split("</style>", 1)[1]))
+        assert "Junior Agentic Coder at Tradeify" in text
     svg = banner.banner()
-    ys = [float(y) for y in re.findall(r'<text x="78" y="([\d.]+)"[^>]*font-size="92"', svg)]
-    top, bottom = min(ys) - 92 * 0.72, max(ys)  # cap height of the display face
+    role = re.search(r'<text class="role" x="[\d.]+" y="([\d.]+)" font-size="([\d.]+)"', svg)
+    assert role and float(role.group(2)) >= 24
+    names = [float(y) for y in re.findall(r'<text x="78" y="([\d.]+)"[^>]*font-size="92"', svg)]
+    top = min(names) - 92 * 0.72
+    bottom = float(role.group(1)) + 6
     height = float(re.search(r'viewBox="0 0 \d+ (\d+)"', svg).group(1))
     assert abs((top + bottom) / 2 - height / 2) <= 12
 
@@ -60,25 +66,9 @@ def test_toolkit_is_shorter_than_before():
     assert h <= 600
 
 
-def committed_hero():
-    import hashlib
-    d = hashlib.sha1(panels.hero().encode()).hexdigest()[:8]
-    return (ROOT / "assets" / f"hero.{d}.svg").read_text()
-
-
-def test_role_strip_is_quiet():
-    for svg in (panels.hero(), committed_hero()):
-        for gone in ("CURRENTLY", "BUILDING", "agents.", "harnesses.", "inference.", "@keyframes w0"):
-            assert gone not in svg, gone
-        text = re.sub(r"<[^>]+>", "", svg.split("</style>", 1)[1])
-        assert re.sub(r"\s+", " ", text).strip() == "Junior Agentic Coder at Tradeify"
-
-
-def test_role_strip_is_compact_and_centred():
-    svg = panels.hero()
-    h = float(re.search(r'viewBox="0 0 \d+ (\d+)"', svg).group(1))
-    assert h <= 100
-    m = re.search(r'<text class="sans[^"]*" x="[\d.]+" y="([\d.]+)" font-size="([\d.]+)"', svg)
-    baseline, size = float(m.group(1)), float(m.group(2))
-    centre = baseline - size * 0.35  # optical centre of a cap-height line
-    assert abs(centre - h / 2) <= 4
+def test_role_strip_is_merged_into_banner():
+    readme = (ROOT / "README.md").read_text()
+    assert "assets/hero." not in readme
+    assert not list((ROOT / "assets").glob("hero*.svg"))
+    assert '("hero", hero)' not in (ROOT / "scripts" / "panels.py").read_text()
+    assert readme.index("assets/banner.svg") < readme.index("contributions-badge.svg")

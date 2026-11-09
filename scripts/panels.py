@@ -183,22 +183,6 @@ def section_label(x, y, text, count=None):
 
 
 # ───────────────────────────── hero line under the banner ─────────────────────────────
-def hero():
-    """One quiet line under the banner: no labels, no animation."""
-    Wh, H, BG = 1280, 96, "#05070d"
-    body = f'''<defs>
-  <clipPath id="frame"><rect width="{Wh}" height="{H}" rx="16"/></clipPath>
-  <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
-</defs>
-<g clip-path="url(#frame)">
-  <rect width="{Wh}" height="{H}" fill="{BG}"/>
-  <rect width="{Wh}" height="1.5" fill="url(#edge)"/>
-  <text class="sans rise" x="48" y="58" font-size="29" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="{C["muted"]}">at</tspan> <tspan fill="#79c0ff">Tradeify</tspan></text>
-</g>
-<rect x=".5" y=".5" width="{Wh - 1}" height="{H - 1}" rx="16" fill="none" stroke="#21262d"/>'''
-    return plain(Wh, H, "Junior Agentic Coder at Tradeify", body, aria="Junior Agentic Coder at Tradeify")
-
-
 # ───────────────────────────── pull quote ─────────────────────────────
 def quote():
     h = 128
@@ -360,5 +344,5 @@ def publish(name, svg):
 
 
 if __name__ == "__main__":
-    for name, fn in (("hero", hero), ("agent", agent), ("projects", projects), ("toolkit", tools)):
+    for name, fn in (("agent", agent), ("projects", projects), ("toolkit", tools)):
         publish(name, fn())

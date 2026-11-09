@@ -45,10 +45,12 @@ def banner():
     nodes = "".join(node(l, a, d) for l, a, d in (
         ("plan", -90, 0.5), ("act", 0, 0.65), ("observe", 90, 0.8), ("reflect", 180, 0.95)))
 
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Yash Bahirat, with an agent loop: plan, act, observe, reflect">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Yash Bahirat, Junior Agentic Coder at Tradeify, with an agent loop: plan, act, observe, reflect">
 <style>
   {font_face("Unb", "unbounded-800.woff2", 800)}
   {font_face("JBM", "jbmono-500.woff2", 500)}
+  {font_face("SG", "spacegrotesk-500.woff2", 500)}
+  {font_face("SG", "spacegrotesk-700.woff2", 700)}
   .rise {{ animation: rise 1s cubic-bezier(.2,.8,.2,1) both; }}
   .pop  {{ animation: pop .7s cubic-bezier(.2,.9,.3,1.4) both; transform-box: fill-box; transform-origin: center; }}
   .flow {{ fill: none; stroke: url(#edge); stroke-width: 1.6; stroke-dasharray: 6 10; animation: flow 1.4s linear infinite; }}
@@ -94,12 +96,16 @@ def banner():
 
   <!-- left: identity -->
   <g class="rise" style="animation-delay:.18s">
-    <text x="78" y="173" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="#58a6ff" opacity=".35" filter="url(#glow)">YASH</text>
-    <text x="78" y="173" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="url(#name)">YASH</text>
+    <text x="78" y="141" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="#58a6ff" opacity=".35" filter="url(#glow)">YASH</text>
+    <text x="78" y="141" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="url(#name)">YASH</text>
   </g>
   <g class="rise" style="animation-delay:.3s">
-    <text x="78" y="273" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="#8957e5" opacity=".35" filter="url(#glow)">BAHIRAT</text>
-    <text x="78" y="273" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="url(#name)">BAHIRAT</text>
+    <text x="78" y="241" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="#8957e5" opacity=".35" filter="url(#glow)">BAHIRAT</text>
+    <text x="78" y="241" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="url(#name)">BAHIRAT</text>
+  </g>
+
+  <g class="rise" style="animation-delay:.45s">
+    <text class="role" x="82" y="299" font-size="28" font-family="'SG',ui-sans-serif,system-ui,sans-serif" font-weight="500" fill="#c9d1d9">Junior Agentic Coder <tspan fill="#8b949e">at</tspan> <tspan font-weight="700" fill="#79c0ff">Tradeify</tspan></text>
   </g>
 
   <!-- right: the harness around the model -->
