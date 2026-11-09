@@ -184,41 +184,19 @@ def section_label(x, y, text, count=None):
 
 # ───────────────────────────── hero line under the banner ─────────────────────────────
 def hero():
-    Wh, H, BG = 1280, 124, "#05070d"
-    words = [("agents.", C["blue"]), ("harnesses.", C["purple"]), ("inference.", C["green"])]
-    slot = 2.6
-    T = slot * len(words)
-    css = []
-    groups = []
-    for i, (wd, col) in enumerate(words):
-        a = 100 * i / len(words)
-        b = 100 * (i * slot + 0.45) / T
-        c = 100 * ((i + 1) * slot - 0.45) / T
-        e = 100 * (i + 1) * slot / T
-        pre = f"0%,{a - 0.01:.2f}%{{opacity:0;transform:translateY(28px)}}" if i else ""
-        css.append(
-            f"@keyframes w{i}{{{pre}{a:.2f}%{{opacity:0;transform:translateY(28px)}}"
-            f"{b:.2f}%,{c:.2f}%{{opacity:1;transform:none}}"
-            f"{e:.2f}%,100%{{opacity:0;transform:translateY(-28px)}}}}"
-            f".w{i}{{animation:w{i} {T}s cubic-bezier(.6,0,.2,1) infinite}}")
-        groups.append(f'<text class="sans w{i}" x="1232" y="94" text-anchor="end" font-size="29" font-weight="700" fill="{col}">{wd}</text>')
+    """One quiet line under the banner: no labels, no animation."""
+    Wh, H, BG = 1280, 96, "#05070d"
     body = f'''<defs>
   <clipPath id="frame"><rect width="{Wh}" height="{H}" rx="16"/></clipPath>
-  <clipPath id="slot"><rect x="900" y="62" width="340" height="44"/></clipPath>
-  <linearGradient id="trd" x1="0" x2="1"><stop offset="0" stop-color="{C["blue"]}"/><stop offset="1" stop-color="#d2a8ff"/></linearGradient>
   <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
 </defs>
 <g clip-path="url(#frame)">
   <rect width="{Wh}" height="{H}" fill="{BG}"/>
   <rect width="{Wh}" height="1.5" fill="url(#edge)"/>
-  <text class="mono" x="50" y="46" font-size="15" letter-spacing="3" fill="{C["muted"]}">CURRENTLY</text>
-  <text class="sans rise" x="48" y="94" font-size="29" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="{C["muted"]}">at</tspan> <tspan fill="url(#trd)">Tradeify</tspan></text>
-  <text class="mono" x="1232" y="46" text-anchor="end" font-size="15" letter-spacing="3" fill="{C["muted"]}">BUILDING</text>
-  <g clip-path="url(#slot)">{"".join(groups)}</g>
+  <text class="sans rise" x="48" y="58" font-size="29" font-weight="700" fill="#f0f6fc">Junior Agentic Coder <tspan font-weight="500" fill="{C["muted"]}">at</tspan> <tspan fill="#79c0ff">Tradeify</tspan></text>
 </g>
 <rect x=".5" y=".5" width="{Wh - 1}" height="{H - 1}" rx="16" fill="none" stroke="#21262d"/>'''
-    return plain(Wh, H, "Junior Agentic Coder at Tradeify", body, "".join(css),
-                 aria="Junior Agentic Coder at Tradeify, building agents, harnesses and inference")
+    return plain(Wh, H, "Junior Agentic Coder at Tradeify", body, aria="Junior Agentic Coder at Tradeify")
 
 
 # ───────────────────────────── pull quote ─────────────────────────────

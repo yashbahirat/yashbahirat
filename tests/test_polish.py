@@ -58,3 +58,27 @@ def test_toolkit_labels_have_room():
 def test_toolkit_is_shorter_than_before():
     h = int(re.search(r'height="(\d+)"', panels.tools()).group(1))
     assert h <= 600
+
+
+def committed_hero():
+    import hashlib
+    d = hashlib.sha1(panels.hero().encode()).hexdigest()[:8]
+    return (ROOT / "assets" / f"hero.{d}.svg").read_text()
+
+
+def test_role_strip_is_quiet():
+    for svg in (panels.hero(), committed_hero()):
+        for gone in ("CURRENTLY", "BUILDING", "agents.", "harnesses.", "inference.", "@keyframes w0"):
+            assert gone not in svg, gone
+        text = re.sub(r"<[^>]+>", "", svg.split("</style>", 1)[1])
+        assert re.sub(r"\s+", " ", text).strip() == "Junior Agentic Coder at Tradeify"
+
+
+def test_role_strip_is_compact_and_centred():
+    svg = panels.hero()
+    h = float(re.search(r'viewBox="0 0 \d+ (\d+)"', svg).group(1))
+    assert h <= 100
+    m = re.search(r'<text class="sans[^"]*" x="[\d.]+" y="([\d.]+)" font-size="([\d.]+)"', svg)
+    baseline, size = float(m.group(1)), float(m.group(2))
+    centre = baseline - size * 0.35  # optical centre of a cap-height line
+    assert abs(centre - h / 2) <= 4
