@@ -17,7 +17,7 @@ def font_face(family, file, weight):
 
 
 W, H = 1280, 380
-CX, CY, R = 1010, 182, 120           # agent loop centre + radius
+CX, CY, R = 1010, 190, 110           # agent loop centre + radius
 RING = 150                           # harness ring radius
 
 MONO = "'JBM',ui-monospace,Menlo,Consolas,monospace"
@@ -43,9 +43,9 @@ def banner():
         for a in (-90, 0, 90, 180)
     )
     nodes = "".join(node(l, a, d) for l, a, d in (
-        ("context", -90, 0.5), ("tools", 0, 0.65), ("evals", 90, 0.8), ("memory", 180, 0.95)))
+        ("context", -90, 0.5), ("tools", 0, 0.65), ("evals", 90, 0.8), ("retries", 180, 0.95)))
 
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Yash Bahirat, Junior Agentic Coder at Tradeify. Claude Code in the loop, a harness around it (context, tools, evals, memory), inference underneath">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Yash Bahirat, Junior Agentic Coder at Tradeify. A harness around the model: context, tools, evals, retries">
 <style>
   {font_face("Unb", "unbounded-800.woff2", 800)}
   {font_face("JBM", "jbmono-500.woff2", 500)}
@@ -114,17 +114,11 @@ def banner():
   <circle r="4.5" fill="#e6edf3"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#loop"/></animateMotion></circle>
   <circle r="11" fill="#58a6ff" opacity=".25"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#loop"/></animateMotion></circle>
   <g class="pop" style="animation-delay:.35s">
-    <rect x="{CX - 62}" y="{CY - 17}" width="124" height="34" rx="17" fill="#0d1117" stroke="url(#edge)" stroke-width="1.5"/>
-    <rect x="{CX - 62}" y="{CY - 17}" width="124" height="34" rx="17" fill="none" stroke="#58a6ff" stroke-opacity=".5" class="pulse"/>
-    <text x="{CX}" y="{CY + 4.5}" text-anchor="middle" font-family="{MONO}" font-size="13" fill="#e6edf3">Claude Code</text>
+    <circle cx="{CX}" cy="{CY}" r="30" fill="#0d1117" stroke="url(#edge)" stroke-width="1.5"/>
+    <circle cx="{CX}" cy="{CY}" r="30" fill="none" stroke="#58a6ff" stroke-opacity=".5" class="pulse"/>
+    <text x="{CX}" y="{CY + 4.5}" text-anchor="middle" font-family="{MONO}" font-size="13" fill="#e6edf3">model</text>
   </g>
   {nodes}
-  <g class="rise" style="animation-delay:1.1s">
-    <line x1="{CX - 170}" y1="{CY + R + 30}" x2="{CX + 170}" y2="{CY + R + 30}" stroke="#3d444d" stroke-width="1.5"/>
-    <line x1="{CX - 170}" y1="{CY + R + 24}" x2="{CX - 170}" y2="{CY + R + 36}" stroke="#3d444d" stroke-width="1.5"/>
-    <line x1="{CX + 170}" y1="{CY + R + 24}" x2="{CX + 170}" y2="{CY + R + 36}" stroke="#3d444d" stroke-width="1.5"/>
-    <text x="{CX}" y="{CY + R + 54}" text-anchor="middle" font-family="{MONO}" font-size="12" letter-spacing="3" fill="#8b949e">inference</text>
-  </g>
 </g>
 <rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="18" fill="none" stroke="#21262d"/>
 </svg>'''

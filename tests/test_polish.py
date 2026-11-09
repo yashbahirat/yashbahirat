@@ -74,22 +74,19 @@ def test_role_strip_is_merged_into_banner():
     assert readme.index("assets/banner.svg") < readme.index("contributions-badge.svg")
 
 
-def test_banner_loop_draws_the_bio():
-    # bio: "Claude Code in the loop, a harness around it, inference underneath"
+def test_banner_loop_is_the_harness():
+    # the four things engineered around a model
     for svg in (banner.banner(), (ROOT / "assets" / "banner.svg").read_text()):
-        for node in ("Claude Code", "context", "tools", "evals", "memory", "inference"):
+        for node in ("model", "context", "tools", "evals", "retries"):
             assert f">{node}<" in svg, node
-        for old in (">plan<", ">act<", ">observe<", ">reflect<", ">model<"):
+        for old in (">Claude Code<", ">memory<", ">inference<", ">plan<", ">act<", ">observe<", ">reflect<"):
             assert old not in svg, old
-    svg = banner.banner()
-    inf_y = float(re.search(r'<text[^>]*y="([\d.]+)"[^>]*>inference<', svg).group(1))
-    assert inf_y > banner.CY + banner.R + 20, "inference sits underneath the loop"
-    assert "Claude Code in the loop" in re.search(r'aria-label="([^"]+)"', svg).group(1)
+    assert "context, tools, evals, retries" in re.search(r'aria-label="([^"]+)"', banner.banner()).group(1)
 
 
 def test_loop_nodes_dont_crowd_the_centre():
-    pill_half = 62
-    for label in ("memory", "tools"):
+    centre_half = 30
+    for label in ("retries", "tools"):
         node_half = (14 + 8.4 * len(label)) / 2
-        assert banner.R - pill_half - node_half >= 14, label
-    assert banner.CY + banner.R + 54 <= 372, "inference label must stay inside the banner"
+        assert banner.R - centre_half - node_half >= 14, label
+    assert banner.CY + banner.R + 14 <= 372, "bottom node must stay inside the banner"
