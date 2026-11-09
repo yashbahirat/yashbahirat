@@ -72,3 +72,24 @@ def test_role_strip_is_merged_into_banner():
     assert not list((ROOT / "assets").glob("hero*.svg"))
     assert '("hero", hero)' not in (ROOT / "scripts" / "panels.py").read_text()
     assert readme.index("assets/banner.svg") < readme.index("contributions-badge.svg")
+
+
+def test_banner_loop_draws_the_bio():
+    # bio: "Claude Code in the loop, a harness around it, inference underneath"
+    for svg in (banner.banner(), (ROOT / "assets" / "banner.svg").read_text()):
+        for node in ("Claude Code", "context", "tools", "evals", "memory", "inference"):
+            assert f">{node}<" in svg, node
+        for old in (">plan<", ">act<", ">observe<", ">reflect<", ">model<"):
+            assert old not in svg, old
+    svg = banner.banner()
+    inf_y = float(re.search(r'<text[^>]*y="([\d.]+)"[^>]*>inference<', svg).group(1))
+    assert inf_y > banner.CY + banner.R + 20, "inference sits underneath the loop"
+    assert "Claude Code in the loop" in re.search(r'aria-label="([^"]+)"', svg).group(1)
+
+
+def test_loop_nodes_dont_crowd_the_centre():
+    pill_half = 62
+    for label in ("memory", "tools"):
+        node_half = (14 + 8.4 * len(label)) / 2
+        assert banner.R - pill_half - node_half >= 14, label
+    assert banner.CY + banner.R + 54 <= 372, "inference label must stay inside the banner"

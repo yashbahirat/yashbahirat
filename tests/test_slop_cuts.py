@@ -31,7 +31,7 @@ def test_banner_has_no_fake_prompt():
 def test_banner_ring_text_gone_but_loop_stays():
     svg = banner.banner()
     assert "textPath" not in svg and "RETRIES" not in svg
-    for node in ("plan", "act", "observe", "reflect", "model"):
+    for node in ("context", "tools", "evals", "memory", "Claude Code"):
         assert f">{node}<" in svg
 
 
