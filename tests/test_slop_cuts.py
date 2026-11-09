@@ -95,3 +95,13 @@ def test_agent_yaml_has_exactly_the_three_chosen_beliefs():
     svg = committed("agent")
     for b in BELIEFS:
         assert b in svg.replace("&#x27;", "'"), b
+
+
+@pytest.mark.parametrize("theme", ["dark", "light"])
+def test_card_has_no_bar_chart(theme):
+    svg = CARD[theme]
+    assert 'class="grow"' not in svg and "last 60 days" not in svg and ">today<" not in svg
+    h = int(__import__("re").search(r'height="(\d+)"', svg).group(1))
+    assert h <= 210, "card should shrink once the chart is gone"
+    for kept in ("current streak", "longest streak", "last 30 days", "contributions since"):
+        assert kept in svg, kept

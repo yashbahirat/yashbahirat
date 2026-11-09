@@ -113,7 +113,7 @@ def svg(s, user, t):
     fmt = lambda n: f"{n:,}"
     font = "'JBM','SFMono-Regular',ui-monospace,Menlo,Consolas,monospace"
     since = s["since"].strftime("%b %Y")
-    W, H = 800, 300
+    W, H = 800, 200
     stats_cells = [
         ("current streak", f"{s['current']}d", t["ok"]),
         ("longest streak", f"{s['longest']}d", t["accent2"]),
@@ -130,19 +130,6 @@ def svg(s, user, t):
             f'<text x="{x}" y="{y + 20}" fill="{t["muted"]}" font-size="12">{label}</text></g>'
         )
 
-    # 60-day activity bars, sqrt-scaled so one huge day doesn't flatten the rest
-    series = s["last60"]
-    peak = max(series) or 1
-    base, maxh, x0, pitch, bw = 262, 50, 40, 12, 8
-    bars = []
-    for i, v in enumerate(series):
-        h = 2 if v == 0 else max(4, maxh * math.sqrt(v / peak))
-        fill = t["border"] if v == 0 else "url(#bar)"
-        bars.append(
-            f'<rect class="grow" style="animation-delay:{0.7 + i * 0.012:.3f}s" x="{x0 + i * pitch}" '
-            f'y="{base - h:.1f}" width="{bw}" height="{h:.1f}" rx="2" fill="{fill}"/>'
-        )
-
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{fmt(s['total'])} GitHub contributions">
 <style>
   {font_face("JBM", "jbmono-500.woff2", 500)}
@@ -150,16 +137,13 @@ def svg(s, user, t):
   text {{ font-family: {font}; }}
   .fade {{ animation: in .6s ease-out both; }}
   .big {{ animation: pop .8s cubic-bezier(.2,.9,.3,1.3) .2s both; transform-origin: 40px 120px; }}
-  .grow {{ animation: grow .7s cubic-bezier(.2,.8,.2,1) both; transform-box: fill-box; transform-origin: bottom; }}
   .cursor {{ animation: blink 1s steps(1) infinite; }}
   @keyframes in {{ from {{ opacity: 0; transform: translateY(6px); }} to {{ opacity: 1; transform: none; }} }}
   @keyframes pop {{ from {{ opacity: 0; transform: scale(.85); }} to {{ opacity: 1; transform: none; }} }}
-  @keyframes grow {{ from {{ transform: scaleY(0); }} to {{ transform: none; }} }}
   @keyframes blink {{ 50% {{ opacity: 0; }} }}
 </style>
 <defs>
   <linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="{t['accent']}"/><stop offset="1" stop-color="{t['accent2']}"/></linearGradient>
-  <linearGradient id="bar" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="{t['accent']}"/><stop offset="1" stop-color="{t['accent2']}"/></linearGradient>
 </defs>
 <rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="10" fill="{t['bg']}" stroke="{t['border']}"/>
 <rect x=".5" y=".5" width="{W - 1}" height="30" rx="10" fill="{t['bar']}"/>
@@ -171,10 +155,6 @@ def svg(s, user, t):
 <text class="fade" style="animation-delay:.45s" x="40" y="152" fill="{t['text']}" font-size="14">contributions since {since}</text>
 <line x1="440" y1="76" x2="440" y2="186" stroke="{t['border']}"/>
 {''.join(cells)}
-<line x1="40" y1="202" x2="{W - 40}" y2="202" stroke="{t['border']}" stroke-dasharray="2 4"/>
-{''.join(bars)}
-<text x="40" y="284" fill="{t['muted']}" font-size="11">last 60 days</text>
-<text x="{W - 40}" y="284" text-anchor="end" fill="{t['muted']}" font-size="11">today</text>
 </svg>'''
 
 
