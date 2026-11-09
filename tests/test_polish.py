@@ -12,21 +12,20 @@ import panels  # noqa: E402
 NS = "{http://www.w3.org/2000/svg}"
 
 
-def subtitle(svg):
-    root = ET.fromstring(svg)
-    for t in root.iter(NS + "text"):
-        txt = "".join(t.itertext())
-        if "harnesses" in txt or "harness engineering" in txt:
-            return t, txt
-    raise AssertionError("subtitle not found")
-
-
-def test_banner_subtitle_is_short_and_readable():
+def test_banner_has_no_subtitle_line():
+    # "agents · harnesses · inference" already rotates in the role strip right below the banner
     for svg in (banner.banner(), (ROOT / "assets" / "banner.svg").read_text()):
-        el, txt = subtitle(svg)
-        assert re.sub(r"\s+", " ", txt).strip() == "agents · harnesses · inference"
-        assert float(el.get("font-size")) >= 22
-        assert el.get("fill").lower() not in ("#8b949e", "#6e7681"), "should be brighter than the old grey"
+        for gone in ("harnesses", "harness engineering", "inference engineering"):
+            assert gone not in svg, gone
+        assert ">YASH<" in svg and ">BAHIRAT<" in svg
+
+
+def test_banner_name_is_vertically_centred():
+    svg = banner.banner()
+    ys = [float(y) for y in re.findall(r'<text x="78" y="([\d.]+)"[^>]*font-size="92"', svg)]
+    top, bottom = min(ys) - 92 * 0.72, max(ys)  # cap height of the display face
+    height = float(re.search(r'viewBox="0 0 \d+ (\d+)"', svg).group(1))
+    assert abs((top + bottom) / 2 - height / 2) <= 12
 
 
 def tiles(svg):

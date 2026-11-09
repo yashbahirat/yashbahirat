@@ -1,5 +1,5 @@
 <!-- ───────────────────────── HEADER ───────────────────────── -->
-<img width="100%" src="./assets/banner.svg" alt="Yash Bahirat: agents, harnesses, inference" />
+<img width="100%" src="./assets/banner.svg" alt="Yash Bahirat" />
 
 <img width="100%" src="./assets/hero.e739eaca.svg" alt="Junior Agentic Coder at Tradeify" />
 
