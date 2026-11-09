@@ -1,4 +1,4 @@
-"""Generates assets/banner.svg and assets/footer.svg with embedded subset fonts.
+"""Generates assets/banner.svg with embedded subset fonts.
 
 Usage: python scripts/banner.py   (run from repo root)
 """
@@ -118,34 +118,7 @@ def banner():
 </svg>'''
 
 
-def footer():
-    w, h = 1280, 96
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="open to: agent infra, eval tooling, research collabs">
-<style>
-  {font_face("JBM", "jbmono-500.woff2", 500)}
-  .blink {{ animation: blink 1.05s steps(1) infinite; }}
-  .scan {{ animation: scan 5s ease-in-out infinite; }}
-  @keyframes blink {{ 50% {{ opacity: 0; }} }}
-  @keyframes scan {{ 0% {{ transform: translateX(-400px); }} 100% {{ transform: translateX({w}px); }} }}
-</style>
-<defs>
-  <clipPath id="c"><rect width="{w}" height="{h}" rx="14"/></clipPath>
-  <linearGradient id="l" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0"/><stop offset=".5" stop-color="#bc8cff"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></linearGradient>
-  <radialGradient id="g"><stop offset="0" stop-color="#8957e5" stop-opacity=".35"/><stop offset="1" stop-color="#8957e5" stop-opacity="0"/></radialGradient>
-</defs>
-<g clip-path="url(#c)">
-  <rect width="{w}" height="{h}" fill="#05070d"/>
-  <ellipse cx="{w / 2}" cy="{h}" rx="520" ry="90" fill="url(#g)"/>
-  <rect y="0" width="{w}" height="1.5" fill="url(#l)"/>
-  <rect class="scan" y="0" width="400" height="1.5" fill="#e6edf3" opacity=".6"/>
-  <text x="{w / 2}" y="{h / 2 + 7}" text-anchor="middle" font-family="{MONO}" font-size="21" fill="#6e7681"><tspan fill="#3fb950">$</tspan> open to: <tspan fill="#e6edf3">agent infra</tspan> · <tspan fill="#e6edf3">eval tooling</tspan> · <tspan fill="#e6edf3">research collabs</tspan><tspan class="blink" fill="#e6edf3"> ▋</tspan></text>
-</g>
-<rect x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="14" fill="none" stroke="#21262d"/>
-</svg>'''
-
-
 if __name__ == "__main__":
     out = ROOT / "assets"
     (out / "banner.svg").write_text(banner())
-    (out / "footer.svg").write_text(footer())
-    print("wrote", out / "banner.svg", out / "footer.svg")
+    print("wrote", out / "banner.svg")

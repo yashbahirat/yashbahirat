@@ -53,12 +53,17 @@ def test_agent_yaml_gags_and_beliefs_gone():
             assert kept in svg, kept
 
 
-# 7 · footer cliché
-def test_footer_drops_hard_problems():
-    for svg in (banner.footer(), (ROOT / "assets" / "footer.svg").read_text()):
-        assert "hard problems" not in svg
-        assert "research collabs" in svg
-    assert "hard problems" not in README
+# 7 · footer removed entirely
+def test_footer_is_gone():
+    assert "footer" not in README
+    assert "open to" not in README
+    assert not (ROOT / "assets" / "footer.svg").exists()
+    assert "def footer" not in (ROOT / "scripts" / "banner.py").read_text()
+
+
+def test_page_ends_on_contact_links():
+    tail = README.strip().splitlines()[-3:]
+    assert any("linkedin.com/in/yashbahirat" in l for l in tail)
 
 
 # 8 · honest status
