@@ -2,7 +2,7 @@ name: generate profile cards
 
 on:
   schedule:
-    - cron: "0 */12 * * *"   # every 12 hours
+    - cron: "23 */6 * * *"   # every 6 hours, off the top of the hour (GitHub drops :00 runs under load)
   workflow_dispatch:          # run manually from the Actions tab
   push:
     branches: [main]
