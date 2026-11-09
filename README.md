@@ -20,7 +20,7 @@
 
 <a href="https://github.com/yashbahirat?tab=repositories"><img width="100%" src="./assets/projects.342d3654.svg" alt="Selected work: MPTL (Memory Provenance & Trust Ledger), Sovereign Agentic Workbench, RegulOS" /></a>
 
-<img width="100%" src="./assets/agent.3e648468.svg" alt="agent.yaml: Junior Agentic Coder @ Tradeify; focus: harness, agent and inference engineering" />
+<img width="100%" src="./assets/agent.ced74b3c.svg" alt="agent.yaml: Junior Agentic Coder @ Tradeify; focus: harness, agent and inference engineering" />
 
 <img width="100%" src="./assets/toolkit.0dcd2883.svg" alt="Toolkit: Claude Code, Anthropic API, OpenAI, MCP, LangChain, LangGraph, LangSmith, Langfuse, Pydantic, Hugging Face, vLLM, Ollama, ONNX, CUDA, Python, PyTorch, NumPy, pandas, scikit-learn, OpenCV, Jupyter, Streamlit, TypeScript, Node.js, React, Next.js, Tailwind, FastAPI, Postgres, MongoDB, Supabase, Docker, Linux, Bash, Git, GitHub Actions, AWS, Google Cloud, Cloudflare, Vercel" />
 

@@ -63,6 +63,11 @@ AGENT_YAML = '''agent:
     - agent_engineering       # planning, memory, subagents, long-horizon reliability
     - inference_engineering   # latency, cost, throughput, serving
 
+  beliefs:
+    - "a memory without a source is a rumor"
+    - "agents fail quietly. harnesses should fail loudly"
+    - "temperature 0 is not a test suite"
+
   research:
     published: "Harmony-Bot — IJAECS, Vol. 12, Iss. 7 (2025)"
     patents: 1

@@ -47,7 +47,7 @@ def test_card_has_no_fake_command_or_peak_day(theme):
 # 5 + 6 · agent.yaml
 def test_agent_yaml_gags_and_beliefs_gone():
     for svg in (panels.agent(), committed("agent")):
-        for gone in ("hallucination", "NORMAL", "beliefs", "context is a budget", "evaluated, it doesn"):
+        for gone in ("hallucination", "NORMAL", "context is a budget", "evaluated, it doesn", "spend it like money"):
             assert gone not in svg, gone
         for kept in ("focus", "harness_engineering", "research", "Harmony-Bot"):
             assert kept in svg, kept
@@ -75,3 +75,18 @@ def test_badge_row_untouched():
 
 def test_agent_yaml_has_no_double_blank_lines():
     assert "\n\n\n" not in panels.AGENT_YAML
+
+
+BELIEFS = ["a memory without a source is a rumor",
+           "agents fail quietly. harnesses should fail loudly",
+           "temperature 0 is not a test suite"]
+
+
+def test_agent_yaml_has_exactly_the_three_chosen_beliefs():
+    y = panels.AGENT_YAML
+    block = y[y.index("  beliefs:"):y.index("  research:")]
+    assert [l.strip()[3:-1] for l in block.splitlines()[1:] if l.strip()] == BELIEFS
+    assert y.index("focus:") < y.index("beliefs:") < y.index("research:")
+    svg = committed("agent")
+    for b in BELIEFS:
+        assert b in svg.replace("&#x27;", "'"), b
