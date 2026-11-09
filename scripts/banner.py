@@ -102,7 +102,7 @@ def banner():
     <text x="78" y="290" font-family="{DISPLAY}" font-weight="800" font-size="92" fill="url(#name)">BAHIRAT</text>
   </g>
   <g class="rise" style="animation-delay:.45s">
-    <text x="82" y="336" font-family="{MONO}" font-size="15" fill="#8b949e">agent engineering <tspan fill="#58a6ff">/</tspan> harness engineering <tspan fill="#bc8cff">/</tspan> inference engineering</text>
+    <text x="82" y="340" font-family="{MONO}" font-size="24" letter-spacing="1" fill="#c9d1d9">agents <tspan fill="#58a6ff">·</tspan> harnesses <tspan fill="#bc8cff">·</tspan> inference</text>
   </g>
 
   <!-- right: the harness around the model -->

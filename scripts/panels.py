@@ -329,7 +329,7 @@ def tools():
     css = (".pop { animation: pop .55s cubic-bezier(.2,.9,.3,1.4) both; transform-box: fill-box; transform-origin: center; }"
            "@keyframes pop { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }")
     out, defs = [section_label(2, 18, "toolkit")], []
-    tile, gap, n = 66, 9.33, 0
+    tile, gap, n = 52, 22, 0
     y = 36
     out.append(f'<rect x=".5" y="{y + .5}" width="{W - 1}" height="{{H}}" rx="12" fill="{C["bg"]}" stroke="{C["border"]}"/>')
     y += 34
@@ -351,15 +351,15 @@ def tools():
             defs.append(f'<radialGradient id="g{n}" cx=".5" cy=".35" r=".7"><stop offset="0" stop-color="{fill}" stop-opacity=".22"/><stop offset="1" stop-color="{fill}" stop-opacity="0"/></radialGradient>')
             out.append(
                 f'<g class="pop" style="animation-delay:{0.2 + n * 0.05:.2f}s">'
-                f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="12" fill="{C["bar"]}" stroke="{C["border"]}"/>'
-                f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="12" fill="url(#g{n})"/>'
-                + (f'<svg x="{tx + 18:.1f}" y="{ty + 18}" width="30" height="30" viewBox="0 0 24 24" fill="{C["text"]}" color="{C["text"]}" fill-rule="evenodd">{ic["inner"]}</svg>' if ic.get("inner") else
-                   f'<path transform="translate({tx + 18:.1f} {ty + 18}) scale(1.25)" fill="{fill}" d="{ic["path"]}"/>' if ic["path"] else
-                   f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + 42}" text-anchor="middle" font-size="{22 if len(ic['mono']) <= 3 else 17}" font-weight="700" fill="{fill}">{ic["mono"]}</text>') +
-                f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + tile + 18}" text-anchor="middle" font-size="{12 if len(label) <= 11 else 10.5}" fill="{C["muted"]}">{label}</text></g>'
+                f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="10" fill="{C["bar"]}" stroke="{C["border"]}"/>'
+                f'<rect x="{tx:.1f}" y="{ty}" width="{tile}" height="{tile}" rx="10" fill="url(#g{n})"/>'
+                + (f'<svg x="{tx + 14:.1f}" y="{ty + 14}" width="24" height="24" viewBox="0 0 24 24" fill="{C["text"]}" color="{C["text"]}" fill-rule="evenodd">{ic["inner"]}</svg>' if ic.get("inner") else
+                   f'<path transform="translate({tx + 14:.1f} {ty + 14}) scale(1)" fill="{fill}" d="{ic["path"]}"/>' if ic["path"] else
+                   f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + 33}" text-anchor="middle" font-size="{16 if len(ic['mono']) <= 3 else 13}" font-weight="700" fill="{fill}">{ic["mono"]}</text>') +
+                f'<text class="sans" x="{tx + tile / 2:.1f}" y="{ty + tile + 16}" text-anchor="middle" font-size="{11 if len(label) <= 11 else 10}" fill="{C["muted"]}">{label}</text></g>'
             )
             n += 1
-        y = ty + tile + 52
+        y = ty + tile + 42
     h = y - 12
     body = f'<defs>{"".join(defs)}</defs>' + "\n".join(out).replace("{H}", str(h - 37))
     return plain(W, h, "toolkit", body, css, aria="Toolkit: " + ", ".join(l for _, it in groups for _, l in it))
